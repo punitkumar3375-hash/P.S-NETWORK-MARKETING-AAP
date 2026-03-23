@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marketing Hub ₹100</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
+        .card { background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); width: 90%; max-width: 400px; text-align: center; }
+        h2 { color: #1a73e8; margin-bottom: 5px; }
+        p { color: #5f6368; font-size: 14px; }
+        input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #dadce0; border-radius: 8px; box-sizing: border-box; font-size: 16px; }
+        .btn { background: #1a73e8; color: white; border: none; padding: 15px; width: 100%; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 10px; transition: 0.3s; text-decoration: none; display: inline-block; }
+        .btn:hover { background: #174ea6; }
+        .qr-img { width: 220px; height: 220px; margin-top: 20px; border: 8px solid #f8f9fa; border-radius: 10px; }
+        .wa-btn { background: #25d366; }
+        .wa-btn:hover { background: #128c7e; }
+    </style>
+</head>
+<body>
+
+<div class="card" id="app-box">
+    <h2>🚀 Marketing Hub</h2>
+    <p>Join karein ₹100 mein aur 20% commission payein!</p>
+    <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
+    
+    <form id="joinForm">
+        <input type="text" name="name" placeholder="Aapka Poora Naam" required>
+        <input type="tel" name="mobile" placeholder="WhatsApp Number" required>
+        <input type="text" name="referral" placeholder="Referral Code (Optional)">
+        <button type="submit" class="btn" id="submitBtn">Register & Pay ₹100</button>
+    </form>
+</div>
+
+<script>
+    // --- YAHAN APNI DETAILS BHREIN ---
+    const scriptURL = https://docs.google.com/spreadsheets/d/154KqEtkj5WBFp1Cz9nkwz3apRcxvLgJ0oxloLIj4KeQ/edit?usp=drivesdk
+    const myUPI = 6397969337@ptyes
+    const myWhatsApp = +916397969337
+
+    const form = document.getElementById('joinForm');
+    const box = document.getElementById('app-box');
+
+    form.addEventListener('submit', e => {
+        e.preventDefault();
+        document.getElementById('submitBtn').innerText = "Processing...";
+
+        fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+        .then(response => {
+            const userName = form.name.value;
+            // Payment Page dikhayein
+            box.innerHTML = `
+                <h2>Final Step: Payment</h2>
+                <p>Namaste ${userName}, niche QR Code scan karke ₹100 pay karein.</p>
+                <img class="qr-img" src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=upi://pay?pa=${myUPI}%26am=100%26cu=INR%26pn=MarketingHub" alt="QR Code">
+                <p><strong>Payment ke baad screenshot WhatsApp par bhejein:</strong></p>
+                <a href="https://wa.me/${myWhatsApp}?text=Hi, maine 100 pay kar diye hain. Mera naam ${userName} hai." class="btn wa-btn">WhatsApp Screenshot</a>
+                <p style="font-size:12px; margin-top:15px;">Aapki ID payment verify hone ke baad active hogi.</p>
+            `;
+        })
+        .catch(error => {
+            alert('Kuch galat hua! Phir se koshish karein.');
+            document.getElementById('submitBtn').innerText = "Register & Pay ₹100";
+        });
+    });
+</script>
+
+</body>
+</html>
