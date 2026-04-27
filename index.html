@@ -3,39 +3,67 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Marketing Hub ₹100</title>
+    <title>Marketing Hub - 5 Level Business</title>
     <style>
-        body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
-        .card { background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); width: 90%; max-width: 400px; text-align: center; }
-        h2 { color: #1a73e8; margin-bottom: 5px; }
-        p { color: #5f6368; font-size: 14px; }
-        input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #dadce0; border-radius: 8px; box-sizing: border-box; font-size: 16px; }
-        .btn { background: #1a73e8; color: white; border: none; padding: 15px; width: 100%; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 10px; transition: 0.3s; text-decoration: none; display: inline-block; }
-        .btn:hover { background: #174ea6; }
-        .qr-img { width: 220px; height: 220px; margin-top: 20px; border: 8px solid #f8f9fa; border-radius: 10px; }
-        .wa-btn { background: #25d366; margin-top: 15px; }
-        .pay-now-btn { background: #ff9900; margin-top: 10px; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; padding: 20px; }
+        .card { background: white; padding: 30px; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.2); width: 100%; max-width: 420px; text-align: center; }
+        h2 { color: #333; margin-bottom: 5px; font-size: 28px; }
+        .subtitle { color: #666; font-size: 14px; margin-bottom: 20px; }
+        input, select { width: 100%; padding: 12px; margin: 10px 0; border: 2px solid #eee; border-radius: 10px; box-sizing: border-box; font-size: 16px; transition: 0.3s; }
+        input:focus, select:focus { border-color: #667eea; outline: none; }
+        label { display: block; text-align: left; font-weight: bold; margin-top: 10px; color: #444; font-size: 14px; }
+        .btn { background: #667eea; color: white; border: none; padding: 15px; width: 100%; border-radius: 10px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 15px; transition: 0.3s; text-decoration: none; display: inline-block; }
+        .btn:hover { background: #764ba2; transform: translateY(-2px); }
+        .comm-box { background: #fff3cd; color: #856404; padding: 10px; border-radius: 8px; margin: 10px 0; font-weight: bold; border: 1px solid #ffeeba; }
+        .qr-img { width: 230px; height: 230px; margin-top: 20px; border: 10px solid #f8f9fa; border-radius: 15px; }
+        .wa-btn { background: #25d366; }
+        .pay-now-btn { background: #ff9900; }
+        hr { border: 0; border-top: 1px solid #eee; margin: 20px 0; }
     </style>
 </head>
 <body>
 
 <div class="card" id="app-box">
     <h2>🚀 Marketing Hub</h2>
-    <p>Join karein ₹100 mein aur kamayi shuru karein!</p>
-    <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
+    <div class="subtitle">Apna Level chunein aur kamayi shuru karein</div>
     
     <form id="joinForm">
+        <label>Personal Details</label>
         <input type="text" name="name" placeholder="Aapka Poora Naam" required>
         <input type="tel" name="mobile" placeholder="WhatsApp Number" required>
         <input type="text" name="referral" placeholder="Referral Code (Optional)">
-        <button type="submit" class="btn" id="submitBtn">Register & Pay ₹100</button>
+        
+        <label>Select Your Level</label>
+        <select name="level" id="levelSelect" required onchange="updateCommission()">
+            <option value="100">Level 1 - ₹100 (20% Comm.)</option>
+            <option value="200">Level 2 - ₹200 (25% Comm.)</option>
+            <option value="500">Level 3 - ₹500 (30% Comm.)</option>
+            <option value="1000">Level 4 - ₹1000 (35% Comm.)</option>
+            <option value="2000">Level 5 - ₹2000 (40% Comm.)</option>
+        </select>
+
+        <div id="commInfo" class="comm-box">Aap har referral par ₹20 kamayenge!</div>
+
+        <button type="submit" class="btn" id="submitBtn">Register & Proceed to Pay</button>
     </form>
 </div>
 
 <script>
+    // --- CONFIGURATION ---
     const scriptURL = 'https://script.google.com/macros/s/AKfycbz9-rUmji4UB-wMUH7WgTsJ3lfp73JRfnTQbQu1pDgmIcPIo479nSyyw_cIM1G7OumqMQ/exec'; 
     const myUPI = "6397969337@ptyes";
     const myWhatsApp = "916397969337";
+
+    function updateCommission() {
+        const amt = document.getElementById('levelSelect').value;
+        let comm = 0;
+        if(amt == "100") comm = 20;
+        if(amt == "200") comm = 50;
+        if(amt == "500") comm = 150;
+        if(amt == "1000") comm = 350;
+        if(amt == "2000") comm = 800;
+        document.getElementById('commInfo').innerText = `Aap har referral par ₹${comm} kamayenge!`;
+    }
 
     const form = document.getElementById('joinForm');
     const box = document.getElementById('app-box');
@@ -47,30 +75,31 @@
         btn.disabled = true;
 
         const userName = form.name.value;
-        const upiLink = `upi://pay?pa=${myUPI}&pn=MarketingHub&am=100&cu=INR&tn=MKT_Registration`;
+        const amount = document.getElementById('levelSelect').value;
+        const upiLink = `upi://pay?pa=${myUPI}&pn=MarketingHub&am=${amount}&cu=INR&tn=Level_${amount}_Reg_${userName}`;
 
-        // Background mein data save ho raha hai
+        // Send data to Google Sheets
         fetch(scriptURL, { method: 'POST', body: new FormData(form)})
         .then(response => {
-            // Payment Page dikhayein
+            // Show Success & Payment Page
             box.innerHTML = `
-                <h2 style="color:#25d366;">Data Saved! ✅</h2>
-                <p>Namaste <b>${userName}</b>, ₹100 pay karein.</p>
+                <h2 style="color:#25d366;">Registration Done! ✅</h2>
+                <p>Namaste <b>${userName}</b>, Aapne ₹${amount} wala plan chuna hai.</p>
+                <hr>
+                <a href="${upiLink}" class="btn pay-now-btn">Pay ₹${amount} (PhonePe/GPay)</a>
                 
-                <a href="${upiLink}" class="btn pay-now-btn">PhonePe / Paytm se Pay Karein</a>
-                
-                <p>Ya QR Code scan karein:</p>
+                <p style="margin-top:15px;">Ya ye QR Code scan karein:</p>
                 <img class="qr-img" src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(upiLink)}" alt="QR Code">
                 
-                <p><strong>Payment ke baad screenshot WhatsApp karein:</strong></p>
-                <a href="https://wa.me/${myWhatsApp}?text=Hi Punit, maine ₹100 pay kar diye hain. Naam: ${userName}" class="btn wa-btn">WhatsApp Screenshot</a>
-                <p style="font-size:12px; margin-top:10px;">Aapki ID 30 min mein active ho jayegi.</p>
+                <p><strong>Payment ke baad screenshot bhejein:</strong></p>
+                <a href="https://wa.me/${myWhatsApp}?text=Hi Punit, maine ₹${amount} pay kar diye hain. Naam: ${userName}" class="btn wa-btn">WhatsApp Screenshot</a>
+                <p style="font-size:11px; color:#888; margin-top:10px;">ID will be active in 30 minutes.</p>
             `;
         })
         .catch(error => {
-            alert('Error! Check internet connection.');
-            btn.innerText = "Register & Pay ₹100";
+            alert('Internet Check Karein!');
             btn.disabled = false;
+            btn.innerText = "Register & Proceed to Pay";
         });
     });
 </script>
