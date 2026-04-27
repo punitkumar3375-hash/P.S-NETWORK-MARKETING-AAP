@@ -1,6 +1,16 @@
 <!DOCTYPE html>
 <html lang="hi">
 <head>
+    <meta charset="UT
+        });
+    });
+</script>
+
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="hi">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Marketing Hub ₹100</title>
@@ -13,8 +23,9 @@
         .btn { background: #1a73e8; color: white; border: none; padding: 15px; width: 100%; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 10px; transition: 0.3s; text-decoration: none; display: inline-block; }
         .btn:hover { background: #174ea6; }
         .qr-img { width: 220px; height: 220px; margin-top: 20px; border: 8px solid #f8f9fa; border-radius: 10px; }
-        .wa-btn { background: #25d366; }
+        .wa-btn { background: #25d366; margin-top: 10px; }
         .wa-btn:hover { background: #128c7e; }
+        .pay-now-btn { background: #ff9900; margin-top: 10px; }
     </style>
 </head>
 <body>
@@ -33,10 +44,10 @@
 </div>
 
 <script>
-    // --- YAHAN APNI DETAILS BHREIN ---
-    const scriptURL = https://docs.google.com/spreadsheets/d/154KqEtkj5WBFp1Cz9nkwz3apRcxvLgJ0oxloLIj4KeQ/edit?usp=drivesdk
-    const myUPI = 6397969337@ptyes
-    const myWhatsApp = +916397969337
+    // --- 1. YAHAN APNI APPS SCRIPT URL DAALEIN (Sheet link nahi) ---
+    const scriptURL = 'YOUR_GOOGLE_APPS_SCRIPT_DEPLOY_URL_HERE'; 
+    const myUPI = "6397969337@ptyes";
+    const myWhatsApp = "916397969337";
 
     const form = document.getElementById('joinForm');
     const box = document.getElementById('app-box');
@@ -44,24 +55,28 @@
     form.addEventListener('submit', e => {
         e.preventDefault();
         document.getElementById('submitBtn').innerText = "Processing...";
+        document.getElementById('submitBtn').disabled = true;
 
+        const userName = form.name.value;
+        const upiLink = `upi://pay?pa=${myUPI}&pn=MarketingHub&am=100&cu=INR`;
+
+        // Pehle Payment Page dikhate hain (kyunki static site par POST kabhi kabhi slow hota hai)
+        box.innerHTML = `
+            <h2>Final Step: Payment</h2>
+            <p>Namaste <b>${userName}</b>, ₹100 pay karein.</p>
+            
+            <a href="${upiLink}" class="btn pay-now-btn">PhonePe / Paytm se Pay Karein</a>
+            
+            <p>Ya niche QR Code scan karein:</p>
+            <img class="qr-img" src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(upiLink)}" alt="QR Code">
+            
+            <p><strong>ZAROORI:</strong> Payment ke baad screenshot WhatsApp karein:</p>
+            <a href="https://wa.me/${myWhatsApp}?text=Hi, maine 100 pay kar diye hain. Mera naam ${userName} hai." class="btn wa-btn">WhatsApp Screenshot</a>
+        `;
+
+        // Background mein data save karna
         fetch(scriptURL, { method: 'POST', body: new FormData(form)})
-        .then(response => {
-            const userName = form.name.value;
-            // Payment Page dikhayein
-            box.innerHTML = `
-                <h2>Final Step: Payment</h2>
-                <p>Namaste ${userName}, niche QR Code scan karke ₹100 pay karein.</p>
-                <img class="qr-img" src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=upi://pay?pa=${myUPI}%26am=100%26cu=INR%26pn=MarketingHub" alt="QR Code">
-                <p><strong>Payment ke baad screenshot WhatsApp par bhejein:</strong></p>
-                <a href="https://wa.me/${myWhatsApp}?text=Hi, maine 100 pay kar diye hain. Mera naam ${userName} hai." class="btn wa-btn">WhatsApp Screenshot</a>
-                <p style="font-size:12px; margin-top:15px;">Aapki ID payment verify hone ke baad active hogi.</p>
-            `;
-        })
-        .catch(error => {
-            alert('Kuch galat hua! Phir se koshish karein.');
-            document.getElementById('submitBtn').innerText = "Register & Pay ₹100";
-        });
+        .catch(error => console.error('Data saving error:', error));
     });
 </script>
 
