@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marketing Hub - Official Business</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; padding: 15px; }
+        .card { background: white; padding: 25px; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.3); width: 100%; max-width: 400px; text-align: center; }
+        h2 { color: #1e3c72; margin-bottom: 5px; font-size: 26px; }
+        .subtitle { color: #555; font-size: 14px; margin-bottom: 20px; }
+        label { display: block; text-align: left; font-weight: bold; margin-top: 12px; font-size: 13px; color: #333; }
+        input, select { width: 100%; padding: 12px; margin: 8px 0; border: 2px solid #ddd; border-radius: 10px; font-size: 16px; box-sizing: border-box; }
+        .btn { background: #1e3c72; color: white; border: none; padding: 15px; width: 100%; border-radius: 10px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 15px; transition: 0.3s; text-decoration: none; display: inline-block; }
+        .btn:hover { background: #2a5298; }
+        .comm-info { background: #fff3cd; color: #856404; padding: 10px; border-radius: 8px; font-weight: bold; margin-top: 10px; border: 1px solid #ffeeba; }
+        .qr-container { background: #fdfdfd; padding: 15px; border-radius: 15px; margin-top: 15px; border: 2px dashed #bbb; }
+        .qr-img { width: 260px; height: 260px; border-radius: 10px; }
+        .wa-btn { background: #25d366; margin-top: 15px; }
+        .wa-btn:hover { background: #128c7e; }
+        hr { border: 0; border-top: 1px solid #eee; margin: 20px 0; }
+    </style>
+</head>
+<body>
+
+<div class="card" id="app-box">
+    <h2>🚀 Marketing Hub</h2>
+    <div class="subtitle">Join kariye aur ghar baithe kamaiye</div>
+    
+    <form id="joinForm">
+        <label>Aapka Details</label>
+        <input type="text" name="name" placeholder="Pura Naam" required>
+        <input type="tel" name="mobile" placeholder="WhatsApp No." required>
+        <input type="text" name="referral" placeholder="Referral Code (Optional)">
+        
+        <label>Level Chunein</label>
+        <select name="level" id="levelSelect" required onchange="showComm()">
+            <option value="100">Level 1 - ₹100 (20% Comm.)</option>
+            <option value="200">Level 2 - ₹200 (25% Comm.)</option>
+            <option value="500">Level 3 - ₹500 (30% Comm.)</option>
+            <option value="1000">Level 4 - ₹1000 (35% Comm.)</option>
+            <option value="2000">Level 5 - ₹2000 (40% Comm.)</option>
+        </select>
+
+        <div id="commDisplay" class="comm-info">Har referral par ₹20 milega!</div>
+
+        <button type="submit" class="btn" id="submitBtn">Register & Pay</button>
+    </form>
+</div>
+
+<script>
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbz9-rUmji4UB-wMUH7WgTsJ3lfp73JRfnTQbQu1pDgmIcPIo479nSyyw_cIM1G7OumqMQ/exec'; 
+    const myUPI = "6397969337@ptyes";
+    const myWhatsApp = "916397969337";
+
+    function showComm() {
+        const val = document.getElementById('levelSelect').value;
+        const comms = {"100":20, "200":50, "500":150, "1000":350, "2000":800};
+        document.getElementById('commDisplay').innerText = `Har referral par ₹${comms[val]} milega!`;
+    }
+
+    const form = document.getElementById('joinForm');
+    const box = document.getElementById('app-box');
+
+    form.addEventListener('submit', e => {
+        e.preventDefault();
+        const btn = document.getElementById('submitBtn');
+        btn.innerText = "Saving Data...";
+        btn.disabled = true;
+
+        const userName = form.name.value;
+        const amount = document.getElementById('levelSelect').value;
+        // Simple Clean UPI link for QR
+        const upiLink = `upi://pay?pa=${myUPI}&pn=Punit&am=${amount}&cu=INR&tn=MarketingHub_${userName}`;
+
+        fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+        .then(response => {
+            box.innerHTML = `
+                <h2 style="color:#25d366;">Data Saved! ✅</h2>
+                <p>Namaste <b>${userName}</b>, ₹${amount} pay karein.</p>
+                <div class="qr-container">
+                    <img class="qr-img" src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(upiLink)}" alt="QR Code">
+                    <p style="color:#d93025; font-weight:bold; margin-top:10px;">Iska SCREENSHOT lekar kisi bhi App (Paytm/PhonePe) se Pay karein</p>
+                </div>
+                <a href="https://wa.me/${myWhatsApp}?text=Hi Punit, maine ₹${amount} pay kar diye hain. Naam: ${userName}" class="btn wa-btn">WhatsApp par Screenshot bhejein</a>
+                <p style="font-size:11px; margin-top:10px; color:#777;">Aapki ID 30 minute mein active ho jayegi.</p>
+            `;
+        })
+        .catch(error => {
+            alert('Net slow hai, fir se try karein!');
+            btn.disabled = false;
+            btn.innerText = "Register & Pay";
+        });
+    });
+</script>
+
+</body>
+</html>
