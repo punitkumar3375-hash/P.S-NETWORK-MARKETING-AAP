@@ -8,117 +8,159 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap');
-        body { font-family: 'Poppins', sans-serif; background: #f3f4f6; }
-        .gradient-bg { background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%); }
+        body { font-family: 'Poppins', sans-serif; background: #f0f2f5; }
+        .gradient-bg { background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%); }
+        .glass { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); }
+        .card-dark { background: #111827; border: 1px solid #374151; }
     </style>
 </head>
-<body class="pb-10">
+<body class="pb-10 text-gray-800">
 
-    <div class="gradient-bg text-white pt-10 pb-20 px-6 text-center rounded-b-[3rem] shadow-2xl">
-        <h1 class="text-3xl font-extrabold tracking-tight">MARKETING HUB</h1>
-        <p class="text-blue-100 text-sm mt-2 opacity-80 italic flex items-center justify-center">
-            <i class="fas fa-user-shield mr-2"></i> Designed by Civil Engineer Punit Kumar
+    <div class="gradient-bg text-white pt-12 pb-24 px-6 text-center rounded-b-[3.5rem] shadow-2xl">
+        <h1 class="text-4xl font-black tracking-tight">MARKETING HUB</h1>
+        <p class="text-blue-100 text-sm mt-2 opacity-90 flex items-center justify-center font-medium">
+            <i class="fas fa-chart-line mr-2 text-green-400"></i> Smart Earning Dashboard
         </p>
     </div>
 
-    <div class="max-w-md mx-auto -mt-12 px-4">
+    <div class="max-w-md mx-auto -mt-16 px-4 space-y-6">
+        
         <div class="grid grid-cols-2 gap-4">
-            <div class="bg-white p-4 rounded-3xl shadow-xl text-center border-b-4 border-blue-600">
-                <p class="text-[10px] text-gray-400 font-bold uppercase">Total Members</p>
-                <p id="totalCounter" class="text-3xl font-black text-blue-900 mt-1">0</p>
+            <div class="glass p-5 rounded-3xl shadow-xl text-center border-b-4 border-blue-600">
+                <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest text-center">Total Members</p>
+                <p id="totalCounter" class="text-3xl font-black text-blue-900 mt-1 text-center">0</p>
             </div>
-            <div class="bg-white p-4 rounded-3xl shadow-xl text-center border-b-4 border-green-500 relative">
-                <span class="absolute top-3 right-3 flex h-3 w-3">
+            <div class="glass p-5 rounded-3xl shadow-xl text-center border-b-4 border-green-500 relative">
+                <span class="absolute top-4 right-4 flex h-3 w-3">
                     <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
                     <span class="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
                 </span>
-                <p class="text-[10px] text-gray-400 font-bold uppercase">Today Joined</p>
-                <p id="dailyCounter" class="text-3xl font-black text-green-600 mt-1">0</p>
+                <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest text-center">New Today</p>
+                <p id="dailyCounter" class="text-3xl font-black text-green-600 mt-1 text-center">0</p>
             </div>
         </div>
-    </div>
 
-    <div class="max-w-md mx-auto mt-8 px-6">
-        <div class="bg-white rounded-3xl p-8 shadow-lg border border-gray-100">
-            <h2 class="text-xl font-bold text-gray-800 mb-6 flex items-center">
-                <i class="fas fa-pen-nib text-blue-600 mr-3"></i> Naya Registration
-            </h2>
+        <div class="card-dark rounded-[2.5rem] p-6 shadow-2xl">
+            <h3 class="text-white font-bold mb-4 flex items-center text-sm tracking-wide">
+                <i class="fas fa-user-circle text-blue-400 mr-2"></i> MEMBER LOGIN
+            </h3>
+            <div class="flex space-x-2">
+                <input type="number" id="checkMobile" placeholder="Mobile No. daalein" 
+                    class="flex-1 bg-gray-800 border border-gray-700 rounded-2xl px-4 py-3 text-white outline-none focus:ring-2 focus:ring-blue-500 transition-all text-sm">
+                <button onclick="checkStatus()" class="bg-blue-600 text-white font-black px-6 py-3 rounded-2xl hover:bg-blue-500 active:scale-95 transition-all text-sm">
+                    VIEW
+                </button>
+            </div>
             
-            <form id="registrationForm" class="space-y-5">
-                <div>
-                    <label class="block text-xs font-bold text-gray-500 uppercase ml-1 mb-1">Aapka Naam</label>
-                    <input type="text" name="name" required placeholder="Full Name likhein" 
-                        class="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-200 focus:ring-2 focus:ring-blue-500 outline-none transition-all">
+            <div id="resultArea" class="hidden mt-6 pt-5 border-t border-gray-800 animate-in fade-in duration-500">
+                <div class="flex flex-col space-y-4">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p id="resName" class="text-white font-bold text-xl uppercase"></p>
+                            <p id="resID" class="text-blue-400 text-[10px] font-mono mt-1 tracking-tighter"></p>
+                        </div>
+                        <span id="resStatus" class="px-3 py-1 rounded-full text-[10px] font-bold uppercase"></span>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-3">
+                        <div class="bg-gray-800 p-4 rounded-2xl border border-gray-700">
+                            <p class="text-gray-400 text-[10px] font-bold uppercase">Today's Income</p>
+                            <p id="resDaily" class="text-green-400 font-black text-2xl">₹0</p>
+                        </div>
+                        <div class="bg-gray-800 p-4 rounded-2xl border border-gray-700">
+                            <p class="text-gray-400 text-[10px] font-bold uppercase">Total Income</p>
+                            <p id="resTotal" class="text-yellow-500 font-black text-2xl">₹0</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="glass rounded-[2.5rem] p-8 shadow-xl border border-white">
+            <h2 class="text-2xl font-black text-gray-800 mb-6 tracking-tight">New Registration</h2>
+            <form id="registrationForm" class="space-y-4">
+                <div class="relative">
+                    <i class="fas fa-user absolute left-4 top-4 text-gray-400"></i>
+                    <input type="text" name="name" required placeholder="Aapka Naam" class="w-full pl-12 pr-5 py-4 rounded-2xl bg-gray-50 border border-gray-200 focus:ring-2 focus:ring-blue-500 outline-none transition-all">
+                </div>
+                <div class="relative">
+                    <i class="fas fa-phone absolute left-4 top-4 text-gray-400"></i>
+                    <input type="number" name="mobile" required placeholder="WhatsApp Number" class="w-full pl-12 pr-5 py-4 rounded-2xl bg-gray-50 border border-gray-200 focus:ring-2 focus:ring-blue-500 outline-none transition-all">
+                </div>
+                <div class="relative">
+                    <i class="fas fa-user-friends absolute left-4 top-4 text-gray-400"></i>
+                    <input type="text" name="referral" placeholder="Referral Code (Optional)" class="w-full pl-12 pr-5 py-4 rounded-2xl bg-gray-50 border border-gray-200 focus:ring-2 focus:ring-blue-500 outline-none transition-all">
                 </div>
                 
-                <div>
-                    <label class="block text-xs font-bold text-gray-500 uppercase ml-1 mb-1">Mobile Number</label>
-                    <input type="number" name="mobile" required placeholder="WhatsApp Number" 
-                        class="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-200 focus:ring-2 focus:ring-blue-500 outline-none transition-all">
-                </div>
-
-                <div>
-                    <label class="block text-xs font-bold text-gray-500 uppercase ml-1 mb-1">Referral Code</label>
-                    <input type="text" name="referral" placeholder="Nahi hai toh khali chhodein" 
-                        class="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-200 focus:ring-2 focus:ring-blue-500 outline-none transition-all">
-                </div>
-
-                <button type="submit" id="submitBtn" 
-                    class="w-full gradient-bg text-white font-bold py-4 rounded-2xl shadow-lg hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center">
+                <button type="submit" id="submitBtn" class="w-full gradient-bg text-white font-black py-5 rounded-2xl shadow-lg hover:shadow-blue-300 transition-all flex items-center justify-center space-x-2">
                     <span>JOIN NOW (₹100)</span>
-                    <i class="fas fa-arrow-right ml-2"></i>
+                    <i class="fas fa-bolt"></i>
                 </button>
             </form>
         </div>
     </div>
 
-    <div class="max-w-md mx-auto mt-6 px-6 text-center">
-        <p class="text-xs text-gray-400 leading-relaxed">
-            <i class="fas fa-info-circle mr-1"></i> Registration ke baad payment screenshot WhatsApp par bhejein.<br>
-            Aapka data 100% surakshis aur transparent hai.
-        </p>
-    </div>
-
     <script>
         const scriptURL = 'https://script.google.com/macros/s/AKfycbx6wDDz4R8DeyWlHg2xYLWvZ1ADz9Q2PtiJsbooF7tXtMBcSUbpZAzvV7tO33ABE8l79Q/exec';
-        const form = document.getElementById('registrationForm');
-        const submitBtn = document.getElementById('submitBtn');
-
-        // Dashboard refresh karne ka function
+        
         function refreshDashboard() {
-            fetch(scriptURL)
-            .then(res => res.json())
-            .then(data => {
+            fetch(scriptURL).then(res => res.json()).then(data => {
                 document.getElementById('totalCounter').innerText = data.total || 0;
                 document.getElementById('dailyCounter').innerText = data.daily || 0;
-            })
-            .catch(err => console.error("Error loading dashboard"));
+            }).catch(e => console.log("Stats error"));
         }
 
-        // Form Submit hone par action
+        function checkStatus() {
+            const mobile = document.getElementById('checkMobile').value;
+            const resArea = document.getElementById('resultArea');
+            if(!mobile) return alert("Pehle number daalein!");
+
+            fetch(scriptURL + "?mobile=" + mobile)
+            .then(res => res.json())
+            .then(data => {
+                if(data.found) {
+                    resArea.classList.remove('hidden');
+                    document.getElementById('resName').innerText = data.name;
+                    document.getElementById('resID').innerText = "MEMBER ID: PS-" + data.id;
+                    
+                    // Display Earnings
+                    document.getElementById('resDaily').innerText = "₹" + (data.dailyEarn || 0);
+                    document.getElementById('resTotal').innerText = "₹" + (data.totalEarn || 0);
+                    
+                    // Set Status Badge
+                    const statusTag = document.getElementById('resStatus');
+                    if(data.totalEarn > 0) {
+                        statusTag.innerText = "Active Member";
+                        statusTag.className = "px-3 py-1 rounded-full text-[10px] font-bold uppercase bg-green-900/30 text-green-400 border border-green-500/50";
+                    } else {
+                        statusTag.innerText = "Pending Payment";
+                        statusTag.className = "px-3 py-1 rounded-full text-[10px] font-bold uppercase bg-red-900/30 text-red-400 border border-red-500/50";
+                    }
+                } else {
+                    alert("Ye number register nahi hai!");
+                    resArea.classList.add('hidden');
+                }
+            });
+        }
+
+        const form = document.getElementById('registrationForm');
         form.addEventListener('submit', e => {
             e.preventDefault();
-            submitBtn.disabled = true;
-            submitBtn.innerHTML = '<i class="fas fa-spinner animate-spin"></i> Processing...';
-
+            const btn = document.getElementById('submitBtn');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-circle-notch animate-spin"></i> Processing...';
+            
             fetch(scriptURL, { method: 'POST', body: new FormData(form)})
-            .then(response => {
-                alert("Registration Successful! Ab payment screenshot WhatsApp karein.");
+            .then(() => {
+                alert("Ab payment ka screenshot WhatsApp karein!");
                 form.reset();
-                submitBtn.disabled = false;
-                submitBtn.innerText = 'JOIN NOW (₹100)';
-                refreshDashboard(); // Counter update karein
-            })
-            .catch(error => {
-                alert("Error! Please try again.");
-                submitBtn.disabled = false;
-                submitBtn.innerText = 'JOIN NOW (₹100)';
+                btn.disabled = false;
+                btn.innerHTML = '<span>JOIN NOW (₹100)</span><i class="fas fa-bolt"></i>';
+                refreshDashboard();
             });
         });
 
-        // Load dashboard on start
         window.onload = refreshDashboard;
-        // Refresh every 60 seconds
         setInterval(refreshDashboard, 60000);
     </script>
 </body>
