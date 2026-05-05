@@ -52,7 +52,7 @@
                 </button>
             </div>
             
-            <div id="resultArea" class="hidden mt-6 pt-5 border-t border-gray-800 animate-in fade-in duration-500">
+            <div id="resultArea" class="hidden mt-6 pt-5 border-t border-gray-800">
                 <div class="flex flex-col space-y-4">
                     <div class="flex justify-between items-start">
                         <div>
@@ -61,14 +61,13 @@
                         </div>
                         <span id="resStatus" class="px-3 py-1 rounded-full text-[10px] font-bold uppercase"></span>
                     </div>
-                    
                     <div class="grid grid-cols-2 gap-3">
-                        <div class="bg-gray-800 p-4 rounded-2xl border border-gray-700">
-                            <p class="text-gray-400 text-[10px] font-bold uppercase">Today's Income</p>
+                        <div class="bg-gray-800 p-4 rounded-2xl border border-gray-700 text-center">
+                            <p class="text-gray-400 text-[10px] font-bold uppercase">Today</p>
                             <p id="resDaily" class="text-green-400 font-black text-2xl">₹0</p>
                         </div>
-                        <div class="bg-gray-800 p-4 rounded-2xl border border-gray-700">
-                            <p class="text-gray-400 text-[10px] font-bold uppercase">Total Income</p>
+                        <div class="bg-gray-800 p-4 rounded-2xl border border-gray-700 text-center">
+                            <p class="text-gray-400 text-[10px] font-bold uppercase">Total</p>
                             <p id="resTotal" class="text-yellow-500 font-black text-2xl">₹0</p>
                         </div>
                     </div>
@@ -78,25 +77,27 @@
 
         <div class="glass rounded-[2.5rem] p-8 shadow-xl border border-white">
             <h2 class="text-2xl font-black text-gray-800 mb-6 tracking-tight">New Registration</h2>
-            <form id="registrationForm" class="space-y-4">
-                <div class="relative">
-                    <i class="fas fa-user absolute left-4 top-4 text-gray-400"></i>
-                    <input type="text" name="name" required placeholder="Aapka Naam" class="w-full pl-12 pr-5 py-4 rounded-2xl bg-gray-50 border border-gray-200 focus:ring-2 focus:ring-blue-500 outline-none transition-all">
-                </div>
-                <div class="relative">
-                    <i class="fas fa-phone absolute left-4 top-4 text-gray-400"></i>
-                    <input type="number" name="mobile" required placeholder="WhatsApp Number" class="w-full pl-12 pr-5 py-4 rounded-2xl bg-gray-50 border border-gray-200 focus:ring-2 focus:ring-blue-500 outline-none transition-all">
-                </div>
-                <div class="relative">
-                    <i class="fas fa-user-friends absolute left-4 top-4 text-gray-400"></i>
-                    <input type="text" name="referral" placeholder="Referral Code (Optional)" class="w-full pl-12 pr-5 py-4 rounded-2xl bg-gray-50 border border-gray-200 focus:ring-2 focus:ring-blue-500 outline-none transition-all">
-                </div>
+            <form id="registrationForm" class="space-y-4 mb-6">
+                <input type="text" name="name" required placeholder="Aapka Naam" class="w-full px-5 py-4 rounded-2xl bg-gray-50 border border-gray-200 focus:ring-2 focus:ring-blue-500 outline-none transition-all">
+                <input type="number" name="mobile" required placeholder="WhatsApp Number" class="w-full px-5 py-4 rounded-2xl bg-gray-50 border border-gray-200 focus:ring-2 focus:ring-blue-500 outline-none transition-all">
+                <input type="text" name="referral" placeholder="Referral Code (Optional)" class="w-full px-5 py-4 rounded-2xl bg-gray-50 border border-gray-200 focus:ring-2 focus:ring-blue-500 outline-none transition-all">
                 
-                <button type="submit" id="submitBtn" class="w-full gradient-bg text-white font-black py-5 rounded-2xl shadow-lg hover:shadow-blue-300 transition-all flex items-center justify-center space-x-2">
+                <button type="submit" id="submitBtn" class="w-full gradient-bg text-white font-black py-5 rounded-2xl shadow-lg active:scale-95 transition-all flex items-center justify-center space-x-2">
                     <span>JOIN NOW (₹100)</span>
                     <i class="fas fa-bolt"></i>
                 </button>
             </form>
+
+            <div class="border-t pt-6 text-center">
+                <p class="text-red-600 font-bold text-sm mb-4 animate-pulse">👇 Payment karke Screenshot bhejein</p>
+                <div class="bg-gray-50 p-4 rounded-3xl border-2 border-dashed border-blue-200 inline-block mb-4">
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=8279483660@ptsbi&pn=Punit%20Kumar&am=100" alt="QR Code" class="w-48 h-48 mx-auto">
+                </div>
+                <p class="text-gray-600 font-bold text-xs mb-2">UPI: 8279483660@ptsbi</p>
+                <a href="https://wa.me/918279483660?text=Maine%20100%20pay%20kar%20diye%20hain" class="inline-flex items-center text-green-600 font-black text-sm uppercase">
+                    <i class="fab fa-whatsapp mr-2 text-xl"></i> Screenshot Yahan Bhejein
+                </a>
+            </div>
         </div>
     </div>
 
@@ -121,24 +122,20 @@
                 if(data.found) {
                     resArea.classList.remove('hidden');
                     document.getElementById('resName').innerText = data.name;
-                    document.getElementById('resID').innerText = "MEMBER ID: PS-" + data.id;
-                    
-                    // Display Earnings
+                    document.getElementById('resID').innerText = "ID: PS-" + data.id;
                     document.getElementById('resDaily').innerText = "₹" + (data.dailyEarn || 0);
                     document.getElementById('resTotal').innerText = "₹" + (data.totalEarn || 0);
                     
-                    // Set Status Badge
                     const statusTag = document.getElementById('resStatus');
                     if(data.totalEarn > 0) {
-                        statusTag.innerText = "Active Member";
-                        statusTag.className = "px-3 py-1 rounded-full text-[10px] font-bold uppercase bg-green-900/30 text-green-400 border border-green-500/50";
+                        statusTag.innerText = "Active";
+                        statusTag.className = "px-3 py-1 rounded-full text-[10px] font-bold uppercase bg-green-900/20 text-green-500";
                     } else {
-                        statusTag.innerText = "Pending Payment";
-                        statusTag.className = "px-3 py-1 rounded-full text-[10px] font-bold uppercase bg-red-900/30 text-red-400 border border-red-500/50";
+                        statusTag.innerText = "Pending";
+                        statusTag.className = "px-3 py-1 rounded-full text-[10px] font-bold uppercase bg-red-900/20 text-red-500";
                     }
                 } else {
-                    alert("Ye number register nahi hai!");
-                    resArea.classList.add('hidden');
+                    alert("Record nahi mila!");
                 }
             });
         }
@@ -148,20 +145,24 @@
             e.preventDefault();
             const btn = document.getElementById('submitBtn');
             btn.disabled = true;
-            btn.innerHTML = '<i class="fas fa-circle-notch animate-spin"></i> Processing...';
+            btn.innerHTML = '<i class="fas fa-circle-notch animate-spin"></i> Saving...';
             
             fetch(scriptURL, { method: 'POST', body: new FormData(form)})
             .then(() => {
-                alert("Ab payment ka screenshot WhatsApp karein!");
+                alert("Data Save ho gaya! Ab neeche diye QR Code par payment karein.");
                 form.reset();
                 btn.disabled = false;
                 btn.innerHTML = '<span>JOIN NOW (₹100)</span><i class="fas fa-bolt"></i>';
                 refreshDashboard();
+            })
+            .catch(() => {
+                alert("Error! Par aap payment karke screenshot bhej sakte hain.");
+                btn.disabled = false;
+                btn.innerHTML = 'JOIN NOW (₹100)';
             });
         });
 
         window.onload = refreshDashboard;
-        setInterval(refreshDashboard, 60000);
     </script>
 </body>
 </html>
