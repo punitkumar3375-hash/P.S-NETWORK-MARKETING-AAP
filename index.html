@@ -6,21 +6,20 @@
     <title>Marketing Hub | Punit</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { background-color: #0f172a; color: white; font-family: sans-serif; }
+        body { background-color: #0f172a; color: white; font-family: sans-serif; overflow-x: hidden; }
         .hidden-section { display: none; }
-        .box-active { border: 2px solid #3b82f6; background: #1e293b; box-shadow: 0 0 15px rgba(59,130,246,0.3); }
-        .box-locked { border: 2px solid #334155; opacity: 0.6; }
-        input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+        .box-active { border: 2px solid #3b82f6; background: #1e293b; box-shadow: 0 0 15px rgba(59,130,246,0.3); cursor: pointer; }
+        .box-locked { border: 2px solid #334155; opacity: 0.6; cursor: pointer; }
+        .bonus-glow { animation: pulse 2s infinite; border-color: #fbbf24 !important; box-shadow: 0 0 25px rgba(251, 191, 36, 0.5) !important; }
+        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
     </style>
 </head>
 <body class="p-4 flex items-center justify-center min-h-screen">
 
     <div id="loginPage" class="max-w-md w-full bg-slate-800 rounded-[2.5rem] p-10 shadow-2xl border border-slate-700 text-center">
-        <h1 class="text-4xl font-black italic text-blue-500 mb-8 uppercase tracking-tighter">Marketing Hub</h1>
-        <div class="space-y-4">
-            <input id="mobileInput" type="number" placeholder="Mobile Number" class="w-full bg-slate-900 border-2 border-slate-700 rounded-2xl px-5 py-4 text-center text-lg outline-none focus:border-blue-500 transition-all">
-            <button id="loginBtn" onclick="checkStatus()" class="w-full bg-blue-600 hover:bg-blue-700 py-4 rounded-2xl font-black shadow-lg transition-all active:scale-95">LOGIN</button>
-        </div>
+        <h1 class="text-4xl font-black italic text-blue-500 mb-8 uppercase">Marketing Hub</h1>
+        <input id="mobileInput" type="number" placeholder="Mobile Number" class="w-full bg-slate-900 border-2 border-slate-700 rounded-2xl px-5 py-4 text-center text-lg outline-none focus:border-blue-500 mb-4">
+        <button id="loginBtn" onclick="checkStatus()" class="w-full bg-blue-600 hover:bg-blue-700 py-4 rounded-2xl font-black shadow-lg transition-all active:scale-95">LOGIN</button>
         <p class="mt-8 text-sm text-gray-400 font-bold uppercase tracking-widest">
             New Member? <br> <a href="javascript:void(0)" onclick="showReg()" class="text-blue-400 text-lg underline italic">Register Now</a>
         </p>
@@ -31,20 +30,20 @@
         <div class="space-y-4">
             <input id="regName" type="text" placeholder="Full Name" class="w-full bg-slate-900 border-2 border-slate-700 rounded-xl px-4 py-3 outline-none focus:border-blue-500">
             <input id="regMobile" type="number" placeholder="Mobile Number" class="w-full bg-slate-900 border-2 border-slate-700 rounded-xl px-4 py-3 outline-none focus:border-blue-500">
-            <select id="regLevel" class="w-full bg-slate-900 border-2 border-slate-700 rounded-xl px-4 py-3 outline-none text-gray-400">
+            <select id="regLevel" class="w-full bg-slate-900 border-2 border-slate-700 rounded-xl px-4 py-3 text-gray-400">
                 <option value="100">Plan ₹100</option>
                 <option value="200">Plan ₹200</option>
                 <option value="500">Plan ₹500</option>
                 <option value="1000">Plan ₹1000</option>
                 <option value="2000">Plan ₹2000</option>
             </select>
-            <button id="regBtn" onclick="submitReg()" class="w-full bg-green-600 py-4 rounded-xl font-black uppercase shadow-lg active:scale-95 transition-all">Submit Details</button>
-            <button onclick="showLogin()" class="w-full text-gray-500 text-[10px] font-bold uppercase py-2 tracking-widest">Back to Login</button>
+            <button id="regBtn" onclick="submitReg()" class="w-full bg-green-600 py-4 rounded-xl font-black uppercase shadow-lg">Submit Details</button>
+            <button onclick="showLogin()" class="w-full text-gray-500 text-[10px] font-bold uppercase py-2">Back to Login</button>
         </div>
     </div>
 
     <div id="dashboardPage" class="hidden-section max-w-md w-full bg-slate-800 rounded-[2.5rem] p-6 shadow-2xl border border-slate-700">
-        <div class="flex justify-between items-center mb-6">
+        <div class="flex justify-between items-center mb-6 px-2">
             <div>
                 <p id="userName" class="text-[10px] text-blue-300 font-bold italic uppercase tracking-widest">---</p>
                 <h2 class="text-xl font-black text-blue-500 italic uppercase">Your Dashboard</h2>
@@ -63,12 +62,29 @@
             </div>
         </div>
 
-        <div id="boxesContainer" class="grid grid-cols-5 gap-2"></div>
+        <p class="text-[9px] text-center text-gray-500 font-bold mb-4 uppercase italic">Tap boxes for details</p>
+        <div id="boxesContainer" class="grid grid-cols-5 gap-2 mb-6"></div>
+    </div>
+
+    <div id="infoModal" class="hidden-section fixed inset-0 bg-black/90 flex items-center justify-center z-50 p-6">
+        <div class="bg-slate-800 w-full max-w-xs rounded-[2.5rem] p-8 border border-blue-500/30 shadow-2xl text-center">
+            <h3 id="modalTitle" class="text-2xl font-black text-blue-500 italic mb-4">LVL ---</h3>
+            <div class="bg-slate-900 p-4 rounded-2xl mb-4">
+                <p class="text-gray-400 text-xs font-bold uppercase mb-1">Current Joins</p>
+                <p id="modalJoins" class="text-3xl font-black text-white">0</p>
+            </div>
+            <div class="bg-blue-600/10 p-4 rounded-2xl border border-blue-500/20 mb-6">
+                <p class="text-blue-300 text-[10px] font-bold uppercase">Estimated Level Income</p>
+                <p id="modalEarning" class="text-xl font-black text-green-400">₹0</p>
+            </div>
+            <button onclick="closeModal()" class="w-full bg-slate-700 py-3 rounded-xl font-bold text-blue-400">CLOSE</button>
+        </div>
     </div>
 
     <script>
         const webAppUrl = "https://script.google.com/macros/s/AKfycbxkaqO4cP3M8R9mLuC10JZHszVOqKPAL0jDFugCEbCivUu8xYbdzjx1ZpaKWiVXOccD0w/exec";
-        
+        let userFullData = null;
+
         function showReg() { 
             document.getElementById('loginPage').classList.add('hidden-section'); 
             document.getElementById('regPage').classList.remove('hidden-section'); 
@@ -77,43 +93,33 @@
             document.getElementById('regPage').classList.add('hidden-section'); 
             document.getElementById('loginPage').classList.remove('hidden-section'); 
         }
-
-        function submitReg() {
-            const name = document.getElementById('regName').value;
-            const mobile = document.getElementById('regMobile').value;
-            const level = document.getElementById('regLevel').value;
-            if(!name || !mobile) return alert("Please fill all details!");
-
-            document.getElementById('regBtn').innerText = "Sending...";
-            fetch(webAppUrl, { method: "POST", body: JSON.stringify({name, mobile, level}) })
-            .then(() => {
-                alert("Registration Successful! Admin will activate your account after payment.");
-                showLogin();
-                document.getElementById('regBtn').innerText = "Submit Details";
-            });
-        }
+        function closeModal() { document.getElementById('infoModal').classList.add('hidden-section'); }
 
         function checkStatus() {
             const mobile = document.getElementById('mobileInput').value;
-            if(!mobile) return alert("Enter Mobile Number!");
+            if(!mobile) return alert("Enter Number!");
+            document.getElementById('loginBtn').innerText = "Loading...";
             
-            document.getElementById('loginBtn').innerText = "Verifying...";
             fetch(webAppUrl + "?mobile=" + mobile)
             .then(res => res.json())
             .then(data => {
                 if(data.status === "success") {
+                    userFullData = data;
                     updateDashboard(data);
                     document.getElementById('loginPage').classList.add('hidden-section');
                     document.getElementById('dashboardPage').classList.remove('hidden-section');
-                } else {
-                    alert("Account not found or not active!");
-                }
-                document.getElementById('loginBtn').innerText = "LOGIN";
-            })
-            .catch(err => {
-                alert("Connection error! Please try again.");
+                } else { alert("Account not active!"); }
                 document.getElementById('loginBtn').innerText = "LOGIN";
             });
+        }
+
+        function showModal(lvl) {
+            const count = parseInt(userFullData['count' + lvl]) || 0;
+            const earning = lvl * 0.20 * count; // 20% calculation
+            document.getElementById('modalTitle').innerText = "Level ₹" + lvl;
+            document.getElementById('modalJoins').innerText = count;
+            document.getElementById('modalEarning').innerText = "₹" + Math.floor(earning);
+            document.getElementById('infoModal').classList.remove('hidden-section');
         }
 
         function updateDashboard(data) {
@@ -125,20 +131,31 @@
             [100, 200, 500, 1000, 2000].forEach(lvl => {
                 const count = parseInt(data['count' + lvl]) || 0;
                 let activeClass = (data.activeLevel == lvl) ? 'box-active' : 'box-locked';
-                
-                // Simple calculation: 20% commission per join
                 totalEarn += (lvl * 0.20 * count);
 
                 html += `
-                <div class="p-2 rounded-2xl text-center min-h-[80px] flex flex-col justify-center transition-all ${activeClass}">
+                <div onclick="showModal('${lvl}')" class="p-2 rounded-2xl text-center min-h-[90px] flex flex-col justify-center transition-all ${activeClass}">
                     <p class="text-[8px] font-black text-gray-400 uppercase">LVL ${lvl}</p>
-                    <p class="text-white font-black text-lg">${count}</p>
+                    <p class="text-white font-black text-lg leading-none my-1">${count}</p>
                     <p class="text-[6px] text-blue-400 font-bold uppercase tracking-widest">Joins</p>
                 </div>`;
             });
-            
             document.getElementById('boxesContainer').innerHTML = html;
             document.getElementById('resTotal').innerText = "₹" + Math.floor(totalEarn);
+        }
+
+        function submitReg() {
+            const name = document.getElementById('regName').value;
+            const mobile = document.getElementById('regMobile').value;
+            const level = document.getElementById('regLevel').value;
+            if(!name || !mobile) return alert("Fill details!");
+
+            document.getElementById('regBtn').innerText = "Sending...";
+            fetch(webAppUrl, { method: "POST", body: JSON.stringify({name, mobile, level}) })
+            .then(() => {
+                alert("Success! Admin will activate soon.");
+                showLogin();
+            });
         }
     </script>
 </body>
