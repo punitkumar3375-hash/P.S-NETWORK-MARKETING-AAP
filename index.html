@@ -7,11 +7,10 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body { background-color: #0f172a; color: white; font-family: sans-serif; overflow-x: hidden; }
-        .hidden-section { display: none; }
+        .hidden-section { display: none !important; }
         .box-active { border: 2px solid #3b82f6; background: #1e293b; box-shadow: 0 0 15px rgba(59,130,246,0.3); cursor: pointer; }
         .box-locked { border: 2px solid #334155; opacity: 0.6; cursor: pointer; }
-        .bonus-glow { animation: pulse 2s infinite; border-color: #fbbf24 !important; box-shadow: 0 0 25px rgba(251, 191, 36, 0.5) !important; }
-        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+        #infoModal { backdrop-filter: blur(5px); }
     </style>
 </head>
 <body class="p-4 flex items-center justify-center min-h-screen">
@@ -30,7 +29,7 @@
         <div class="space-y-4">
             <input id="regName" type="text" placeholder="Full Name" class="w-full bg-slate-900 border-2 border-slate-700 rounded-xl px-4 py-3 outline-none focus:border-blue-500">
             <input id="regMobile" type="number" placeholder="Mobile Number" class="w-full bg-slate-900 border-2 border-slate-700 rounded-xl px-4 py-3 outline-none focus:border-blue-500">
-            <select id="regLevel" class="w-full bg-slate-900 border-2 border-slate-700 rounded-xl px-4 py-3 text-gray-400">
+            <select id="regLevel" class="w-full bg-slate-900 border-2 border-slate-700 rounded-xl px-4 py-3 text-gray-400 outline-none">
                 <option value="100">Plan ₹100</option>
                 <option value="200">Plan ₹200</option>
                 <option value="500">Plan ₹500</option>
@@ -66,18 +65,18 @@
         <div id="boxesContainer" class="grid grid-cols-5 gap-2 mb-6"></div>
     </div>
 
-    <div id="infoModal" class="hidden-section fixed inset-0 bg-black/90 flex items-center justify-center z-50 p-6">
-        <div class="bg-slate-800 w-full max-w-xs rounded-[2.5rem] p-8 border border-blue-500/30 shadow-2xl text-center">
-            <h3 id="modalTitle" class="text-2xl font-black text-blue-500 italic mb-4">LVL ---</h3>
-            <div class="bg-slate-900 p-4 rounded-2xl mb-4">
+    <div id="infoModal" class="hidden-section fixed inset-0 bg-black/80 flex items-center justify-center z-[100] p-6">
+        <div class="bg-slate-800 w-full max-w-xs rounded-[2.5rem] p-8 border border-blue-500/50 shadow-2xl text-center relative">
+            <h3 id="modalTitle" class="text-2xl font-black text-blue-500 italic mb-4 uppercase">LVL ---</h3>
+            <div class="bg-slate-900 p-4 rounded-2xl mb-4 border border-slate-700">
                 <p class="text-gray-400 text-xs font-bold uppercase mb-1">Current Joins</p>
                 <p id="modalJoins" class="text-3xl font-black text-white">0</p>
             </div>
             <div class="bg-blue-600/10 p-4 rounded-2xl border border-blue-500/20 mb-6">
-                <p class="text-blue-300 text-[10px] font-bold uppercase">Estimated Level Income</p>
+                <p class="text-blue-300 text-[10px] font-bold uppercase tracking-widest">Estimated Level Income</p>
                 <p id="modalEarning" class="text-xl font-black text-green-400">₹0</p>
             </div>
-            <button onclick="closeModal()" class="w-full bg-slate-700 py-3 rounded-xl font-bold text-blue-400">CLOSE</button>
+            <button onclick="closeModal()" class="w-full bg-blue-600 py-3 rounded-xl font-black text-white uppercase tracking-widest active:scale-95 transition-all">CLOSE</button>
         </div>
     </div>
 
@@ -93,7 +92,23 @@
             document.getElementById('regPage').classList.add('hidden-section'); 
             document.getElementById('loginPage').classList.remove('hidden-section'); 
         }
-        function closeModal() { document.getElementById('infoModal').classList.add('hidden-section'); }
+        
+        // Modal kholne aur band karne ka function
+        function openModal(lvl) {
+            console.log("Opening Modal for Level:", lvl); // Debugging ke liye
+            const count = parseInt(userFullData['count' + lvl]) || 0;
+            const earning = lvl * 0.20 * count; 
+            
+            document.getElementById('modalTitle').innerText = "Level ₹" + lvl;
+            document.getElementById('modalJoins').innerText = count;
+            document.getElementById('modalEarning').innerText = "₹" + Math.floor(earning);
+            
+            document.getElementById('infoModal').classList.remove('hidden-section');
+        }
+
+        function closeModal() { 
+            document.getElementById('infoModal').classList.add('hidden-section'); 
+        }
 
         function checkStatus() {
             const mobile = document.getElementById('mobileInput').value;
@@ -108,18 +123,13 @@
                     updateDashboard(data);
                     document.getElementById('loginPage').classList.add('hidden-section');
                     document.getElementById('dashboardPage').classList.remove('hidden-section');
-                } else { alert("Account not active!"); }
+                } else { alert("Account active nahi hai!"); }
+                document.getElementById('loginBtn').innerText = "LOGIN";
+            })
+            .catch(e => {
+                alert("Server error! Connection check karein.");
                 document.getElementById('loginBtn').innerText = "LOGIN";
             });
-        }
-
-        function showModal(lvl) {
-            const count = parseInt(userFullData['count' + lvl]) || 0;
-            const earning = lvl * 0.20 * count; // 20% calculation
-            document.getElementById('modalTitle').innerText = "Level ₹" + lvl;
-            document.getElementById('modalJoins').innerText = count;
-            document.getElementById('modalEarning').innerText = "₹" + Math.floor(earning);
-            document.getElementById('infoModal').classList.remove('hidden-section');
         }
 
         function updateDashboard(data) {
@@ -133,9 +143,10 @@
                 let activeClass = (data.activeLevel == lvl) ? 'box-active' : 'box-locked';
                 totalEarn += (lvl * 0.20 * count);
 
+                // Yahan onclick="openModal('${lvl}')" zaroori hai
                 html += `
-                <div onclick="showModal('${lvl}')" class="p-2 rounded-2xl text-center min-h-[90px] flex flex-col justify-center transition-all ${activeClass}">
-                    <p class="text-[8px] font-black text-gray-400 uppercase">LVL ${lvl}</p>
+                <div onclick="openModal('${lvl}')" class="p-2 rounded-2xl text-center min-h-[90px] flex flex-col justify-center transition-all ${activeClass}">
+                    <p class="text-[8px] font-black text-gray-400 uppercase tracking-tighter">LVL ${lvl}</p>
                     <p class="text-white font-black text-lg leading-none my-1">${count}</p>
                     <p class="text-[6px] text-blue-400 font-bold uppercase tracking-widest">Joins</p>
                 </div>`;
@@ -148,12 +159,12 @@
             const name = document.getElementById('regName').value;
             const mobile = document.getElementById('regMobile').value;
             const level = document.getElementById('regLevel').value;
-            if(!name || !mobile) return alert("Fill details!");
+            if(!name || !mobile) return alert("Details bharo!");
 
             document.getElementById('regBtn').innerText = "Sending...";
             fetch(webAppUrl, { method: "POST", body: JSON.stringify({name, mobile, level}) })
             .then(() => {
-                alert("Success! Admin will activate soon.");
+                alert("Success! Admin active kar dega.");
                 showLogin();
             });
         }
