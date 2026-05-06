@@ -3,78 +3,111 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Marketing Hub | Dashboard</title>
+    <title>Marketing Hub | Punit</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { background-color: #0f172a; color: white; font-family: 'Segoe UI', sans-serif; }
-        .box-locked { border: 2px solid #334155; background: #1e293b; opacity: 0.6; transition: all 0.3s; }
-        .box-active { border: 2px solid #3b82f6; background: #1e293b; box-shadow: 0 0 20px rgba(59, 130, 246, 0.4); opacity: 1; }
+        body { background-color: #0f172a; color: white; font-family: sans-serif; overflow-x: hidden; }
+        .hidden-section { display: none; }
+        .box-locked { border: 2px solid #334155; background: rgba(30, 41, 59, 0.7); opacity: 0.6; cursor: pointer; }
+        .box-active { border: 2px solid #3b82f6; background: #1e293b; box-shadow: 0 0 15px rgba(59,130,246,0.3); cursor: pointer; }
         .bonus-glow { animation: pulse 2s infinite; border-color: #fbbf24 !important; box-shadow: 0 0 25px rgba(251, 191, 36, 0.5) !important; opacity: 1; }
-        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.03); } }
+        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.02); } }
         input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
     </style>
 </head>
 <body class="p-4 flex items-center justify-center min-h-screen">
 
-    <div class="max-w-md w-full bg-slate-800 rounded-[2.5rem] p-8 shadow-2xl border border-slate-700">
-        <div class="text-center mb-8">
-            <h1 class="text-3xl font-black italic tracking-tighter text-blue-500 uppercase">Marketing Hub</h1>
-            <p class="text-gray-400 text-[10px] mt-1 uppercase tracking-[0.2em]">Welcome: <span id="userName" class="text-blue-300 font-bold italic">User</span></p>
+    <div id="loginPage" class="max-w-md w-full bg-slate-800 rounded-[2.5rem] p-10 shadow-2xl border border-slate-700 text-center">
+        <h1 class="text-4xl font-black italic text-blue-500 mb-8 uppercase tracking-tighter">Marketing Hub</h1>
+        <div class="space-y-4">
+            <input id="mobileInput" type="number" placeholder="Mobile Number" class="w-full bg-slate-900 border-2 border-slate-700 rounded-2xl px-5 py-4 text-center text-lg outline-none focus:border-blue-500 transition-all">
+            <button id="loginBtn" onclick="checkStatus()" class="w-full bg-blue-600 hover:bg-blue-700 py-4 rounded-2xl font-black shadow-lg transition-all active:scale-95">LOGIN</button>
         </div>
+        <p class="mt-8 text-sm text-gray-400 font-bold uppercase tracking-widest">
+            New Member? <br> <a href="javascript:void(0)" onclick="showReg()" class="text-blue-400 text-lg underline italic">Register Now</a>
+        </p>
+    </div>
 
-        <div class="relative mb-8">
-            <input id="mobileInput" type="number" placeholder="Mobile Number Daalein" 
-                   class="w-full bg-slate-900 border-2 border-slate-700 rounded-2xl px-5 py-4 text-sm focus:outline-none focus:border-blue-500 transition-all">
-            <button onclick="checkStatus()" 
-                    class="absolute right-2 top-2 bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-xl font-black text-xs transition-all shadow-lg active:scale-95">
-                CHECK
-            </button>
-        </div>
-
-        <div class="grid grid-cols-2 gap-4 mb-8 text-center">
-            <div class="bg-slate-900/50 p-5 rounded-3xl border border-slate-700/50">
-                <p class="text-gray-500 text-[10px] uppercase font-bold tracking-widest mb-1">Kul Kamayi</p>
-                <p id="resTotal" class="text-3xl font-black text-green-400 italic">₹0</p>
+    <div id="regPage" class="hidden-section max-w-md w-full bg-slate-800 rounded-[2.5rem] p-8 shadow-2xl border border-slate-700">
+        <div class="flex gap-2 mb-6">
+            <div class="flex-1 bg-blue-600/20 border border-blue-500/30 p-3 rounded-2xl text-center">
+                <p class="text-[8px] text-blue-300 uppercase font-black tracking-widest">Today's Joins</p>
+                <p id="dailyJoins" class="text-xl font-black italic">--</p>
             </div>
-            <div class="bg-slate-900/50 p-5 rounded-3xl border border-slate-700/50">
-                <p class="text-gray-500 text-[10px] uppercase font-bold tracking-widest mb-1">Active Level</p>
-                <p id="activeLvlDisplay" class="text-3xl font-black text-blue-400 italic">₹--</p>
+            <div class="flex-1 bg-green-600/20 border border-green-500/30 p-3 rounded-2xl text-center">
+                <p class="text-[8px] text-green-300 uppercase font-black tracking-widest">Total Network</p>
+                <p id="totalJoins" class="text-xl font-black italic">--</p>
             </div>
         </div>
 
-        <h3 class="text-[10px] font-black text-gray-500 mb-4 uppercase tracking-[0.2em] text-center italic">Referral Progress & Bonuses</h3>
-        <div class="grid grid-cols-5 gap-2 mb-8">
-            <script>
-                const lvls = ["100", "200", "500", "1000", "2000"];
-                lvls.forEach(l => {
-                    document.write(`
-                        <div id="lvl${l}" class="box-locked p-2 rounded-2xl text-center flex flex-col justify-between min-h-[115px] relative">
-                            <div id="bonus${l}" class="hidden absolute -top-3 left-0 right-0 bg-gradient-to-r from-yellow-400 to-orange-500 text-black text-[7px] font-black py-1 rounded-full shadow-lg z-10 animate-bounce uppercase">Bonus!</div>
-                            <p class="text-[8px] font-black text-gray-500">LVL ${l}</p>
-                            <p id="c${l}" class="text-white font-black text-[11px] my-1">0</p>
-                            <div class="mt-auto">
-                                <p class="text-[7px] font-black text-blue-400 mb-1"><span id="p${l}">0</span>%</p>
-                                <div class="w-full bg-slate-700 h-1.5 rounded-full overflow-hidden">
-                                    <div id="bar${l}" class="bg-blue-500 h-full transition-all duration-700" style="width: 0%"></div>
-                                </div>
-                            </div>
-                        </div>
-                    `);
-                });
-            </script>
+        <h2 class="text-xl font-black text-center mb-6 text-blue-500 uppercase italic">Create Account</h2>
+        <div class="space-y-4">
+            <input id="regName" type="text" placeholder="Full Name" class="w-full bg-slate-900 border-2 border-slate-700 rounded-xl px-4 py-3 outline-none focus:border-blue-500">
+            <input id="regMobile" type="number" placeholder="Mobile Number" class="w-full bg-slate-900 border-2 border-slate-700 rounded-xl px-4 py-3 outline-none focus:border-blue-500">
+            <select id="regLevel" class="w-full bg-slate-900 border-2 border-slate-700 rounded-xl px-4 py-3 outline-none text-gray-400">
+                <option value="100">Plan ₹100</option>
+                <option value="200">Plan ₹200</option>
+                <option value="500">Plan ₹500</option>
+                <option value="1000">Plan ₹1000</option>
+                <option value="2000">Plan ₹2000</option>
+            </select>
+            <button id="regBtn" onclick="submitReg()" class="w-full bg-green-600 py-4 rounded-xl font-black uppercase shadow-lg active:scale-95 transition-all">Submit Details</button>
+            <button onclick="showLogin()" class="w-full text-gray-500 text-[10px] font-bold uppercase py-2 tracking-widest">Back to Login</button>
+        </div>
+    </div>
+
+    <div id="dashboardPage" class="hidden-section max-w-md w-full bg-slate-800 rounded-[2.5rem] p-6 shadow-2xl border border-slate-700">
+        <div class="flex justify-between items-center mb-6 px-2">
+            <div>
+                <p id="userName" class="text-[10px] text-blue-300 font-bold italic uppercase tracking-widest">---</p>
+                <h2 class="text-xl font-black text-blue-500 italic uppercase">Your Dashboard</h2>
+            </div>
+            <button onclick="location.reload()" class="bg-slate-700 p-2 rounded-xl text-red-400 font-bold text-[10px]">LOGOUT</button>
         </div>
 
-        <div class="bg-blue-600/10 p-4 rounded-2xl border border-blue-500/20 text-center">
-            <p class="text-[9px] text-blue-300 font-medium italic uppercase tracking-wider">
-                *Includes 15-35% Base + 5-15% Early Bird + Target Bonuses
-            </p>
-            <p class="text-[8px] text-gray-500 mt-2 font-bold uppercase">
-                Payment ke liye Dashboard ka screenshot Admin ko bhejein
+        <div class="grid grid-cols-2 gap-3 mb-6">
+            <div class="bg-slate-900/50 p-4 rounded-2xl border border-slate-700/50 text-center">
+                <p class="text-[8px] text-gray-500 font-bold uppercase mb-1">Total Earning</p>
+                <p id="resTotal" class="text-2xl font-black text-green-400 italic">₹0</p>
+            </div>
+            <div class="bg-slate-900/50 p-4 rounded-2xl border border-slate-700/50 text-center">
+                <p class="text-[8px] text-gray-500 font-bold uppercase mb-1">Active Level</p>
+                <p id="activeLvlDisplay" class="text-2xl font-black text-blue-400 italic">₹0</p>
+            </div>
+        </div>
+
+        <p class="text-[9px] text-center text-gray-500 font-bold mb-4 uppercase tracking-[0.2em] italic">Tap on box to see benefits</p>
+        <div id="boxesContainer" class="grid grid-cols-5 gap-2 mb-6"></div>
+        
+        <div class="bg-blue-600/10 p-3 rounded-2xl border border-blue-500/20 text-center">
+            <p class="text-[9px] text-blue-300 font-bold uppercase tracking-wider italic">
+                *15-35% Comm + Target Bonus Included
             </p>
         </div>
     </div>
 
+    <div id="infoModal" class="hidden-section fixed inset-0 bg-black/90 flex items-center justify-center z-50 p-6">
+        <div class="bg-slate-800 w-full max-w-xs rounded-[2.5rem] p-8 border border-blue-500/30 shadow-2xl">
+            <h3 id="modalTitle" class="text-2xl font-black text-blue-500 italic mb-2">LVL ---</h3>
+            <div class="space-y-4 text-sm">
+                <div class="flex justify-between border-b border-slate-700 pb-2">
+                    <span class="text-gray-400 font-bold">Your Joins:</span>
+                    <span id="modalJoins" class="font-black text-white text-lg">0 / --</span>
+                </div>
+                <p id="modalBenefit" class="text-[11px] text-blue-200 italic leading-relaxed bg-blue-900/20 p-3 rounded-xl"></p>
+                <div class="bg-blue-600/10 p-3 rounded-xl border border-blue-500/20">
+                    <p class="text-[10px] text-gray-300 font-bold mb-1 uppercase tracking-widest">Level Target Bonus</p>
+                    <p id="modalBonus" class="text-lg font-black text-yellow-400">₹--</p>
+                </div>
+            </div>
+            <button onclick="closeModal()" class="w-full mt-6 bg-slate-700 py-3 rounded-xl font-bold text-xs uppercase tracking-widest text-blue-400">Close</button>
+        </div>
+    </div>
+
     <script>
+        // Punit, aapka Web App URL yahan set hai
+        const webAppUrl = "https://script.google.com/macros/s/AKfycbwlIxiVKULR1_NQovJwf8G2nbHxGB-j9KlAyOQ_zQfjQj9GAg5fUj_zHdAxGGOlmJNSrA/exec";
+        
         const appConfig = {
             "100":  { target: 10, bonus: 200, base: 0.15 },
             "200":  { target: 15, bonus: 400, base: 0.20 },
@@ -83,74 +116,123 @@
             "2000": { target: 30, bonus: 1000, base: 0.35 }
         };
 
-        const webAppUrl = "https://script.google.com/macros/s/AKfycbzuhWIWz2UKi1H-esj7RB_UYmaDpE-wDdH2YhO4tOCLPy0CL3mb72IXKP0t0W-uqtiNxg/exec";
+        let currentUserData = null;
+
+        function showReg() { 
+            document.getElementById('loginPage').classList.add('hidden-section'); 
+            document.getElementById('regPage').classList.remove('hidden-section');
+            fetchStats();
+        }
+        function showLogin() { 
+            document.getElementById('regPage').classList.add('hidden-section'); 
+            document.getElementById('loginPage').classList.remove('hidden-section'); 
+        }
+        function closeModal() { document.getElementById('infoModal').classList.add('hidden-section'); }
+
+        function fetchStats() {
+            fetch(webAppUrl + "?getStats=true")
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById('dailyJoins').innerText = data.today + "+";
+                document.getElementById('totalJoins').innerText = (data.total + 100) + "+";
+            });
+        }
+
+        function submitReg() {
+            const name = document.getElementById('regName').value;
+            const mobile = document.getElementById('regMobile').value;
+            const level = document.getElementById('regLevel').value;
+            if(!name || !mobile) return alert("Please fill all details!");
+
+            document.getElementById('regBtn').innerText = "Sending...";
+            fetch(webAppUrl, { method: "POST", body: JSON.stringify({name, mobile, level}) })
+            .then(() => {
+                alert("Request Sent! Wait for Admin approval.");
+                showLogin();
+                document.getElementById('regBtn').innerText = "Submit Details";
+            });
+        }
 
         function checkStatus() {
             const mobile = document.getElementById('mobileInput').value;
-            if(!mobile) return alert("Pehle Mobile Number daalein!");
-
-            document.getElementById('userName').innerText = "Loading...";
-
+            if(!mobile) return alert("Enter Mobile Number!");
+            
+            document.getElementById('loginBtn').innerText = "Verifying...";
             fetch(webAppUrl + "?mobile=" + mobile)
             .then(res => res.json())
             .then(data => {
                 if(data.status === "success") {
+                    currentUserData = data;
                     updateDashboard(data);
+                    document.getElementById('loginPage').classList.add('hidden-section');
+                    document.getElementById('dashboardPage').classList.remove('hidden-section');
+                } else if(data.status === "pending") {
+                    alert("Account is PENDING. Contact Admin for activation.");
                 } else {
-                    alert("Record Nahi Mila! Details check karein.");
-                    document.getElementById('userName').innerText = "Member";
+                    alert("Account Not Found! Please Register.");
                 }
-            })
-            .catch(err => alert("Server connection error!"));
+                document.getElementById('loginBtn').innerText = "LOGIN";
+            });
+        }
+
+        function showModal(lvl) {
+            const cfg = appConfig[lvl];
+            const count = parseInt(currentUserData['count' + lvl]) || 0;
+            document.getElementById('modalTitle').innerText = "Level ₹" + lvl;
+            document.getElementById('modalJoins').innerText = count + " / " + cfg.target;
+            document.getElementById('modalBonus').innerText = "₹" + cfg.bonus;
+            
+            let benefitText = `Current Comm Rate: ${cfg.base*100}% <br><br>`;
+            if(count < 3) {
+                benefitText += `Early Bird Offer Active! <br>Next 3 Joins will give you Extra 5%, 10%, and 15% Bonus on top of base rate!`;
+            } else {
+                benefitText += `You have already unlocked Early Bird benefits. Keep going to hit the ₹${cfg.bonus} target bonus!`;
+            }
+            document.getElementById('modalBenefit').innerHTML = benefitText;
+            document.getElementById('infoModal').classList.remove('hidden-section');
         }
 
         function updateDashboard(data) {
             document.getElementById('userName').innerText = data.name;
             document.getElementById('activeLvlDisplay').innerText = "₹" + data.activeLevel;
+            let totalEarn = 0;
+            let html = "";
             
-            let totalEarnings = 0;
-
             Object.keys(appConfig).forEach(lvl => {
                 const count = parseInt(data['count' + lvl]) || 0;
                 const cfg = appConfig[lvl];
+                let levelInc = 0;
                 
-                // --- CALCULATION LOGIC ---
-                let levelIncome = 0;
                 for(let i=1; i<=count; i++) {
-                    let rate = cfg.base; // Flat Rate (15% to 35%)
-                    if(i === 1) rate += 0.05; // Extra 5% for first
-                    if(i === 2) rate += 0.10; // Extra 10% for second
-                    if(i === 3) rate += 0.15; // Extra 15% for third
-                    levelIncome += (parseInt(lvl) * rate);
+                    let r = cfg.base;
+                    if(i==1) r+=0.05; if(i==2) r+=0.10; if(i==3) r+=0.15;
+                    levelInc += (lvl * r);
                 }
-
-                // --- BONUS & UI UPDATES ---
-                let percent = (count / cfg.target) * 100;
-                const box = document.getElementById('lvl' + lvl);
-                const badge = document.getElementById('bonus' + lvl);
                 
-                // Reset State
-                box.className = "box-locked p-2 rounded-2xl text-center flex flex-col justify-between min-h-[115px] relative";
-                badge.classList.add('hidden');
+                let progress = Math.min((count/cfg.target)*100, 100);
+                if(progress >= 100) levelInc += cfg.bonus;
+                totalEarn += levelInc;
 
-                if(percent >= 100) {
-                    percent = 100;
-                    levelIncome += cfg.bonus; // Target Bonus
-                    badge.classList.remove('hidden');
-                    box.classList.add('bonus-glow');
-                } else if(data.activeLevel == lvl) {
-                    box.classList.add('box-active');
-                }
-
-                totalEarnings += levelIncome;
-
-                // Sync with UI
-                document.getElementById('c' + lvl).innerText = count;
-                document.getElementById('p' + lvl).innerText = Math.round(percent);
-                document.getElementById('bar' + lvl).style.width = percent + "%";
+                html += `
+                <div onclick="showModal('${lvl}')" class="p-2 rounded-2xl text-center min-h-[110px] flex flex-col justify-between transition-all 
+                    ${progress>=100 ? 'bonus-glow' : ''} 
+                    ${data.activeLevel == lvl ? 'box-active' : 'box-locked'}">
+                    <p class="text-[7px] font-black text-gray-500 uppercase tracking-tighter">LVL ${lvl}</p>
+                    <div class="my-1">
+                        <p class="text-white font-black text-[14px] leading-none">${count}</p>
+                        <p class="text-[6px] text-gray-400 uppercase font-bold tracking-widest">Joins</p>
+                    </div>
+                    <div class="mt-auto">
+                        <p class="text-[6.5px] font-black text-blue-400 italic mb-1">${Math.round(progress)}%</p>
+                        <div class="w-full bg-slate-700 h-1 rounded-full overflow-hidden">
+                            <div class="bg-blue-500 h-full transition-all duration-700" style="width:${progress}%"></div>
+                        </div>
+                    </div>
+                </div>`;
             });
-
-            document.getElementById('resTotal').innerText = "₹" + Math.floor(totalEarnings);
+            
+            document.getElementById('boxesContainer').innerHTML = html;
+            document.getElementById('resTotal').innerText = "₹" + Math.floor(totalEarn);
         }
     </script>
 </body>
