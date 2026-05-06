@@ -15,21 +15,19 @@
 </head>
 <body class="p-4 flex items-center justify-center min-h-screen">
 
-    <div id="loginPage" class="max-w-md w-full bg-slate-800 rounded-[2.5rem] p-10 shadow-2xl border border-slate-700 text-center text-white">
+    <div id="loginPage" class="max-w-md w-full bg-slate-800 rounded-[2.5rem] p-10 shadow-2xl border border-slate-700 text-center text-white text-white">
         <h1 class="text-4xl font-black italic text-blue-500 mb-8 uppercase">Marketing Hub</h1>
         <input id="mobileInput" type="number" placeholder="Mobile Number" class="w-full bg-slate-900 border-2 border-slate-700 rounded-2xl px-5 py-4 text-center text-lg outline-none focus:border-blue-500 mb-4 text-white">
         <button id="loginBtn" onclick="checkStatus()" class="w-full bg-blue-600 hover:bg-blue-700 py-4 rounded-2xl font-black shadow-lg transition-all active:scale-95 text-white">LOGIN</button>
-        <p class="mt-8 text-sm text-gray-400 font-bold uppercase tracking-widest">
-            New Member? <br> <a href="javascript:void(0)" onclick="showReg()" class="text-blue-400 text-lg underline italic">Register Now</a>
-        </p>
+        <p class="mt-8 text-sm text-gray-400 font-bold uppercase tracking-widest">New Member? <br> <a href="javascript:void(0)" onclick="showReg()" class="text-blue-400 text-lg underline italic">Register Now</a></p>
     </div>
 
-    <div id="regPage" class="hidden-section max-w-md w-full bg-slate-800 rounded-[2.5rem] p-8 shadow-2xl border border-slate-700 text-white">
-        <h2 class="text-xl font-black text-center mb-6 text-blue-500 uppercase italic">Create Account</h2>
+    <div id="regPage" class="hidden-section max-w-md w-full bg-slate-800 rounded-[2.5rem] p-8 shadow-2xl border border-slate-700 text-white text-center">
+        <h2 class="text-xl font-black mb-6 text-blue-500 uppercase italic">Create Account</h2>
         <div class="space-y-4">
             <input id="regName" type="text" placeholder="Full Name" class="w-full bg-slate-900 border-2 border-slate-700 rounded-xl px-4 py-3 outline-none text-white">
-            <input id="regMobile" type="number" placeholder="Mobile Number" class="w-full bg-slate-900 border-2 border-slate-700 rounded-xl px-4 py-3 outline-none text-white">
-            <select id="regLevel" class="w-full bg-slate-900 border-2 border-slate-700 rounded-xl px-4 py-3 text-gray-300 outline-none">
+            <input id="regMobile" type="number" placeholder="Mobile Number" class="w-full bg-slate-900 border-2 border-slate-700 rounded-xl px-4 py-3 outline-none text-white text-white">
+            <select id="regLevel" class="w-full bg-slate-900 border-2 border-slate-700 rounded-xl px-4 py-3 text-gray-300">
                 <option value="100">Plan ₹100</option>
                 <option value="200">Plan ₹200</option>
                 <option value="500">Plan ₹500</option>
@@ -45,7 +43,7 @@
         <div class="flex justify-between items-center mb-6 px-2">
             <div>
                 <p id="userName" class="text-[10px] text-blue-300 font-bold italic uppercase tracking-widest">---</p>
-                <h2 class="text-xl font-black text-blue-500 italic uppercase">Your Dashboard</h2>
+                <h2 class="text-xl font-black text-blue-500 italic uppercase">Dashboard</h2>
             </div>
             <button onclick="location.reload()" class="bg-slate-700 p-2 rounded-xl text-red-400 font-bold text-[10px]">LOGOUT</button>
         </div>
@@ -60,22 +58,18 @@
                 <p id="activeLvlDisplay" class="text-2xl font-black text-blue-400 italic">₹0</p>
             </div>
         </div>
-
-        <p class="text-[9px] text-center text-gray-500 font-bold mb-4 uppercase italic">Tap boxes for details</p>
         <div id="boxesContainer" class="grid grid-cols-5 gap-2 mb-6"></div>
     </div>
 
-    <div id="infoModal" class="hidden-section fixed inset-0 bg-black/80 flex items-center justify-center z-[100] p-6">
+    <div id="infoModal" class="hidden-section fixed inset-0 bg-black/80 flex items-center justify-center z-[100] p-6 text-white">
         <div class="bg-slate-800 w-full max-w-xs rounded-[2.5rem] p-8 border border-blue-500/50 shadow-2xl text-center relative text-white">
             <h3 id="modalTitle" class="text-2xl font-black text-blue-500 italic mb-4 uppercase">LVL 0</h3>
-            <div class="bg-slate-900 p-4 rounded-2xl mb-4 border border-slate-700">
-                <p class="text-gray-400 text-xs font-bold uppercase mb-1">Current Joins</p>
+            <div class="bg-slate-900 p-4 rounded-2xl mb-4 border border-slate-700 text-center text-white">
+                <p class="text-gray-400 text-xs font-bold uppercase mb-1">Total Joins</p>
                 <p id="modalJoins" class="text-3xl font-black text-white">0</p>
             </div>
-            <div class="bg-blue-600/10 p-4 rounded-2xl border border-blue-500/20 mb-6">
-                <p class="text-blue-300 text-[10px] font-bold uppercase tracking-widest">Commission Total</p>
-                <p id="modalEarning" class="text-xl font-black text-green-400">₹0</p>
-            </div>
+            <div id="modalDetails" class="bg-slate-900/50 p-4 rounded-2xl border border-slate-700/30 mb-6 space-y-2">
+                </div>
             <button onclick="closeModal()" class="w-full bg-blue-600 py-3 rounded-xl font-black text-white uppercase tracking-widest active:scale-95 transition-all shadow-lg">CLOSE</button>
         </div>
     </div>
@@ -83,118 +77,93 @@
     <script>
         const webAppUrl = "https://script.google.com/macros/s/AKfycbxkaqO4cP3M8R9mLuC10JZHszVOqKPAL0jDFugCEbCivUu8xYbdzjx1ZpaKWiVXOccD0w/exec";
         let userFullData = null;
+        const config = {
+            100:  { base: 0.15 },
+            200:  { base: 0.20 },
+            500:  { base: 0.25 },
+            1000: { base: 0.30 },
+            2000: { base: 0.35 }
+        };
 
-        function showReg() { 
-            document.getElementById('loginPage').classList.add('hidden-section'); 
-            document.getElementById('regPage').classList.remove('hidden-section'); 
-        }
-        function showLogin() { 
-            document.getElementById('regPage').classList.add('hidden-section'); 
-            document.getElementById('loginPage').classList.remove('hidden-section'); 
-        }
+        function showReg() { document.getElementById('loginPage').classList.add('hidden-section'); document.getElementById('regPage').classList.remove('hidden-section'); }
+        function showLogin() { document.getElementById('regPage').classList.add('hidden-section'); document.getElementById('loginPage').classList.remove('hidden-section'); }
         function closeModal() { document.getElementById('infoModal').classList.add('hidden-section'); }
+
+        function calculateLevelEarn(lvl, count) {
+            const conf = config[lvl];
+            let earn = 0;
+            let detailsHtml = "";
+            let bP = conf.base * 100;
+
+            if (count >= 1) { 
+                let tP = (conf.base + 0.05);
+                earn += (lvl * tP);
+                detailsHtml += `<div class="flex justify-between text-[10px] border-b border-slate-700 pb-1 mb-1"><div class="text-left font-bold uppercase text-blue-300">1st Join <br><span class="text-[8px] text-gray-500">Base ${bP}% + Extra 5%</span></div><span>₹${lvl*tP}</span></div>`;
+            }
+            if (count >= 2) { 
+                let tP = (conf.base + 0.10);
+                earn += (lvl * tP);
+                detailsHtml += `<div class="flex justify-between text-[10px] border-b border-slate-700 pb-1 mb-1"><div class="text-left font-bold uppercase text-blue-300">2nd Join <br><span class="text-[8px] text-gray-500">Base ${bP}% + Extra 10%</span></div><span>₹${lvl*tP}</span></div>`;
+            }
+            if (count >= 3) { 
+                let tP = (conf.base + 0.15);
+                earn += (lvl * tP);
+                detailsHtml += `<div class="flex justify-between text-[10px] border-b border-slate-700 pb-1 mb-1"><div class="text-left font-bold uppercase text-blue-300">3rd Join <br><span class="text-[8px] text-gray-500">Base ${bP}% + Extra 15%</span></div><span>₹${lvl*tP}</span></div>`;
+            }
+            if (count > 3) {
+                let baseAmt = (count - 3) * (lvl * conf.base);
+                earn += baseAmt;
+                detailsHtml += `<div class="flex justify-between text-[10px] pt-1"><div class="text-left font-bold uppercase text-blue-300">Next ${count-3} <br><span class="text-[8px] text-gray-500">Base ${bP}% only</span></div><span>₹${Math.floor(baseAmt)}</span></div>`;
+            }
+            return { total: earn, html: detailsHtml };
+        }
 
         function checkStatus() {
             const mobile = document.getElementById('mobileInput').value;
-            if(!mobile) return alert("Enter Number!");
+            if(!mobile) return alert("Number daalo!");
             document.getElementById('loginBtn').innerText = "Loading...";
-            fetch(webAppUrl + "?mobile=" + mobile)
-            .then(res => res.json())
-            .then(data => {
+            fetch(webAppUrl + "?mobile=" + mobile).then(res => res.json()).then(data => {
                 if(data.status === "success") {
                     userFullData = data;
                     updateDashboard(data);
                     document.getElementById('loginPage').classList.add('hidden-section');
                     document.getElementById('dashboardPage').classList.remove('hidden-section');
-                } else { alert("Account active nahi hai!"); }
+                } else { alert("Not Found!"); }
                 document.getElementById('loginBtn').innerText = "LOGIN";
             });
         }
 
-        function openModal(lvlValue) {
-            if(!userFullData) return;
-            const lvl = parseInt(lvlValue);
+        function openModal(lvl) {
             const count = parseInt(userFullData['count' + lvl]) || 0;
-            
-            // Re-calculating level specific earning for popup
-            const config = {
-                100: { base: 0.15, first: 20, second: 25, third: 30 },
-                200: { base: 0.20, first: 50, second: 60, third: 70 },
-                500: { base: 0.25, first: 150, second: 175, third: 200 },
-                1000: { base: 0.30, first: 350, second: 400, third: 450 },
-                2000: { base: 0.35, first: 800, second: 900, third: 1000 }
-            };
-            
-            const conf = config[lvl];
-            let levelEarn = 0;
-            if (count >= 1) levelEarn += conf.first;
-            if (count >= 2) levelEarn += conf.second;
-            if (count >= 3) levelEarn += conf.third;
-            if (count > 3) levelEarn += (count - 3) * (lvl * conf.base);
-
+            const res = calculateLevelEarn(lvl, count);
             document.getElementById('modalTitle').innerText = "Level ₹" + lvl;
             document.getElementById('modalJoins').innerText = count;
-            document.getElementById('modalEarning').innerText = "₹" + Math.floor(levelEarn);
+            document.getElementById('modalDetails').innerHTML = res.html + `<div class="mt-4 pt-2 border-t-2 border-blue-500 font-black text-green-400 flex justify-between"><span>TOTAL EARN</span> <span>₹${Math.floor(res.total)}</span></div>`;
             document.getElementById('infoModal').classList.remove('hidden-section');
         }
 
         function updateDashboard(data) {
             document.getElementById('userName').innerText = data.name;
             document.getElementById('activeLvlDisplay').innerText = "₹" + data.activeLevel;
-            
-            let totalEarn = 0;
-            let totalJoins = 0;
-            let html = "";
-            
-            const config = {
-                100:  { base: 0.15, first: 20,  second: 25,  third: 30 },
-                200:  { base: 0.20, first: 50,  second: 60,  third: 70 },
-                500:  { base: 0.25, first: 150, second: 175, third: 200 },
-                1000: { base: 0.30, first: 350, second: 400, third: 450 },
-                2000: { base: 0.35, first: 800, second: 900, third: 1000 }
-            };
-
+            let totalEarn = 0, totalJoins = 0, html = "";
             [100, 200, 500, 1000, 2000].forEach(lvl => {
                 const count = parseInt(data['count' + lvl]) || 0;
                 totalJoins += count;
-                const conf = config[lvl];
-                let levelEarning = 0;
-
-                if (count >= 1) levelEarning += conf.first;
-                if (count >= 2) levelEarning += conf.second;
-                if (count >= 3) levelEarning += conf.third;
-                if (count > 3) levelEarning += (count - 3) * (lvl * conf.base);
-
-                totalEarn += levelEarning;
+                const res = calculateLevelEarn(lvl, count);
+                totalEarn += res.total;
                 let activeClass = (data.activeLevel == lvl) ? 'box-active' : 'box-locked';
-                html += `<div onclick="openModal(${lvl})" class="p-2 rounded-2xl text-center min-h-[90px] flex flex-col justify-center transition-all ${activeClass}">
-                            <p class="text-[8px] font-black text-gray-400 uppercase tracking-tighter">LVL ${lvl}</p>
-                            <p class="text-white font-black text-lg leading-none my-1">${count}</p>
-                            <p class="text-[6px] text-blue-400 font-bold uppercase tracking-widest">Joins</p>
-                         </div>`;
+                html += `<div onclick="openModal(${lvl})" class="p-2 rounded-2xl text-center min-h-[90px] flex flex-col justify-center transition-all ${activeClass}"><p class="text-[8px] font-black text-gray-400 uppercase">LVL ${lvl}</p><p class="text-white font-black text-lg leading-none my-1">${count}</p><p class="text-[6px] text-blue-400 font-bold uppercase tracking-widest">Joins</p></div>`;
             });
-
-            // Target Bonus Logic
-            let bonus = 0;
-            if (totalJoins >= 30) bonus = 1000;
-            else if (totalJoins >= 25) bonus = 800;
-            else if (totalJoins >= 20) bonus = 600;
-            else if (totalJoins >= 15) bonus = 400;
-            else if (totalJoins >= 10) bonus = 200;
-
-            totalEarn += bonus;
+            let bonus = (totalJoins >= 30) ? 1000 : (totalJoins >= 25) ? 800 : (totalJoins >= 20) ? 600 : (totalJoins >= 15) ? 400 : (totalJoins >= 10) ? 200 : 0;
             document.getElementById('boxesContainer').innerHTML = html;
-            document.getElementById('resTotal').innerText = "₹" + Math.floor(totalEarn);
+            document.getElementById('resTotal').innerText = "₹" + Math.floor(totalEarn + bonus);
         }
 
         function submitReg() {
-            const name = document.getElementById('regName').value;
-            const mobile = document.getElementById('regMobile').value;
-            const level = document.getElementById('regLevel').value;
+            const name = document.getElementById('regName').value, mobile = document.getElementById('regMobile').value, level = document.getElementById('regLevel').value;
             if(!name || !mobile) return alert("Details bharo!");
             document.getElementById('regBtn').innerText = "Sending...";
-            fetch(webAppUrl, { method: "POST", body: JSON.stringify({name, mobile, level}) })
-            .then(() => { alert("Registration Success!"); showLogin(); });
+            fetch(webAppUrl, { method: "POST", body: JSON.stringify({name, mobile, level}) }).then(() => { alert("Success!"); showLogin(); });
         }
     </script>
 </body>
