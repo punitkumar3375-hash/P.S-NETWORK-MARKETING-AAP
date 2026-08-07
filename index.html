@@ -22,7 +22,7 @@
       <p class="text-xs text-slate-400 uppercase tracking-widest">ऑफिशियल नेटवर्क मार्केटिंग पोर्टल</p>
     </div>
 
-    <!-- 1. LOGIN & JOIN (REGISTER) TABS -->
+    <!-- 1. LOGIN & JOIN TABS -->
     <div class="glass p-6 rounded-[2rem] border border-blue-500/30 shadow-2xl">
       
       <div class="flex bg-slate-900 p-1 rounded-xl mb-6 border border-slate-700">
@@ -44,7 +44,7 @@
         <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 font-bold p-3 rounded-xl text-sm transition-all shadow-lg">डैशबोर्ड खोलें</button>
       </form>
 
-      <!-- JOIN / REGISTER FORM WITH MULTIPLE PACKAGES -->
+      <!-- JOIN FORM -->
       <form id="joinForm" onsubmit="handleAuth(event, 'join')" class="space-y-4 hidden">
         <h2 class="text-center text-sm font-bold text-amber-400 uppercase">नया रजिस्ट्रेशन करें</h2>
         
@@ -58,13 +58,13 @@
           <input type="tel" placeholder="मोबाइल नंबर लिखें" required class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-sm focus:outline-none focus:border-blue-500 text-white">
         </div>
 
-        <!-- PACKAGE SELECTOR (100, 200, 500, 2000) -->
         <div>
           <label class="text-[11px] text-amber-400 font-bold block mb-1">अपना पैकेज चुनें (Plan Amount)</label>
           <select id="planSelect" onchange="updateQrCode()" class="w-full bg-slate-900 border border-amber-500/50 rounded-xl p-3 text-sm focus:outline-none focus:border-amber-500 text-amber-300 font-bold">
             <option value="100">Starter Plan - ₹100</option>
             <option value="200">Basic Plan - ₹200</option>
             <option value="500">Pro Plan - ₹500</option>
+            <option value="1000">Advanced Plan - ₹1000</option>
             <option value="2000">VIP Plan - ₹2000</option>
           </select>
         </div>
@@ -74,7 +74,6 @@
           <input type="text" placeholder="PSN-XXXXX" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-sm focus:outline-none focus:border-blue-500 text-white">
         </div>
 
-        <!-- DYNAMIC UPI QR CODE SECTION -->
         <div class="bg-slate-900 p-4 rounded-xl border border-amber-500/50 text-center">
           <p class="text-xs font-bold text-amber-400 mb-1">पेमेंट स्कैन करें (<span id="qrAmountText">₹100</span>)</p>
           <p class="text-[10px] text-slate-400 mb-3">Paytm, PhonePe, Google Pay से स्कैन करें</p>
@@ -96,72 +95,73 @@
 
     </div>
 
-    <!-- 2. HINDI PLAN POSTER -->
+    <!-- 2. HINDI PLAN POSTER EXACT MATCH TO YOUR IMAGE WITH EXACT % -->
     <div class="flex flex-col items-center my-6">
       <div id="capturePlanPoster" style="width: 320px; background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%); border-radius: 20px; border: 2px solid #3b82f6; padding: 20px 16px; color: #ffffff; text-align: center; box-shadow: 0 12px 30px rgba(0,0,0,0.6);">
         
         <div style="background: linear-gradient(135deg, #2563eb, #1d4ed8); border-radius: 12px; padding: 12px 10px; margin-bottom: 14px; border: 1px solid #60a5fa;">
           <h2 style="font-size: 22px; font-weight: 900; margin: 0; letter-spacing: 1px;">P.S NETWORK</h2>
-          <p style="font-size: 11px; color: #f59e0b; font-weight: bold; margin: 2px 0 0 0;">🔥 बिज़नेस ऑल पैकेज जानकारी 🔥</p>
+          <p style="font-size: 11px; color: #f59e0b; font-weight: bold; margin: 2px 0 0 0;">OFFICIAL BUSINESS PLAN GUIDE</p>
         </div>
 
         <div style="background: rgba(59, 130, 246, 0.15); border: 1px dashed #3b82f6; border-radius: 12px; padding: 10px; margin-bottom: 14px;">
           <p style="font-size: 11px; color: #cbd5e1; margin: 0;">उपलब्ध एक्टिवेशन प्लान्स</p>
-          <p style="font-size: 18px; font-weight: 900; color: #4ade80; margin: 4px 0 0 0;">₹100 | ₹200 | ₹500 | ₹2000</p>
+          <p style="font-size: 15px; font-weight: 900; color: #4ade80; margin: 4px 0 0 0;">₹100 | ₹200 | ₹500 | ₹1000 | ₹2000</p>
         </div>
 
-        <h3 style="font-size: 13px; font-weight: bold; color: #38bdf8; text-transform: uppercase; margin: 0 0 10px 0;">📊 5-लेवल इनकम चार्ट</h3>
+        <h3 style="font-size: 12px; font-weight: bold; color: #38bdf8; text-transform: uppercase; margin: 0 0 10px 0;">📊 5-LEVEL COMMISSION STRUCTURE</h3>
         
         <div style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px;">
+          
+          <!-- LEVEL 1: 15% -->
           <div style="background: rgba(30, 41, 59, 0.9); border-left: 4px solid #f59e0b; border-radius: 8px; padding: 8px 12px; display: flex; justify-content: space-between; align-items: center; text-align: left;">
             <div>
-              <p style="font-size: 12px; font-weight: bold; color: #f59e0b; margin: 0;">लेवल 1 (डायरेक्ट)</p>
-              <p style="font-size: 9px; color: #94a3b8; margin: 1px 0 0 0;">आपके खुद जोड़ने पर</p>
+              <p style="font-size: 12px; font-weight: bold; color: #f59e0b; margin: 0;">LEVEL 1 (Direct Team)</p>
+              <p style="font-size: 9px; color: #94a3b8; margin: 1px 0 0 0;">Unlimited Direct Referrals</p>
             </div>
-            <p style="font-size: 15px; font-weight: 900; color: #4ade80; margin: 0;">50% <span style="font-size: 9px; font-weight: normal; color: #cbd5e1;">डायरेक्ट</span></p>
+            <p style="font-size: 16px; font-weight: 900; color: #4ade80; margin: 0;">15%</p>
           </div>
 
+          <!-- LEVEL 2: 20% -->
           <div style="background: rgba(30, 41, 59, 0.9); border-left: 4px solid #3b82f6; border-radius: 8px; padding: 8px 12px; display: flex; justify-content: space-between; align-items: center; text-align: left;">
             <div>
-              <p style="font-size: 12px; font-weight: bold; color: #60a5fa; margin: 0;">लेवल 2 (टीम द्वारा)</p>
-              <p style="font-size: 9px; color: #94a3b8; margin: 1px 0 0 0;">2nd जनरेशन टीम</p>
+              <p style="font-size: 12px; font-weight: bold; color: #60a5fa; margin: 0;">LEVEL 2 (Team Level 1)</p>
+              <p style="font-size: 9px; color: #94a3b8; margin: 1px 0 0 0;">Automatic Team Bonus</p>
             </div>
-            <p style="font-size: 15px; font-weight: 900; color: #60a5fa; margin: 0;">20% <span style="font-size: 9px; font-weight: normal; color: #cbd5e1;">कमीशन</span></p>
+            <p style="font-size: 16px; font-weight: 900; color: #60a5fa; margin: 0;">20%</p>
           </div>
 
+          <!-- LEVEL 3: 25% -->
           <div style="background: rgba(30, 41, 59, 0.9); border-left: 4px solid #3b82f6; border-radius: 8px; padding: 8px 12px; display: flex; justify-content: space-between; align-items: center; text-align: left;">
             <div>
-              <p style="font-size: 12px; font-weight: bold; color: #60a5fa; margin: 0;">लेवल 3 (टीम द्वारा)</p>
-              <p style="font-size: 9px; color: #94a3b8; margin: 1px 0 0 0;">3rd जनरेशन टीम</p>
+              <p style="font-size: 12px; font-weight: bold; color: #60a5fa; margin: 0;">LEVEL 3 (Team Level 2)</p>
+              <p style="font-size: 9px; color: #94a3b8; margin: 1px 0 0 0;">Network Expansion</p>
             </div>
-            <p style="font-size: 15px; font-weight: 900; color: #60a5fa; margin: 0;">10% <span style="font-size: 9px; font-weight: normal; color: #cbd5e1;">कमीशन</span></p>
+            <p style="font-size: 16px; font-weight: 900; color: #60a5fa; margin: 0;">25%</p>
           </div>
 
+          <!-- LEVEL 4: 30% -->
           <div style="background: rgba(30, 41, 59, 0.9); border-left: 4px solid #3b82f6; border-radius: 8px; padding: 8px 12px; display: flex; justify-content: space-between; align-items: center; text-align: left;">
             <div>
-              <p style="font-size: 12px; font-weight: bold; color: #60a5fa; margin: 0;">लेवल 4 (टीम द्वारा)</p>
-              <p style="font-size: 9px; color: #94a3b8; margin: 1px 0 0 0;">4th जनरेशन टीम</p>
+              <p style="font-size: 12px; font-weight: bold; color: #60a5fa; margin: 0;">LEVEL 4 (Deep Network)</p>
+              <p style="font-size: 9px; color: #94a3b8; margin: 1px 0 0 0;">Indirect Team Growth</p>
             </div>
-            <p style="font-size: 15px; font-weight: 900; color: #60a5fa; margin: 0;">5% <span style="font-size: 9px; font-weight: normal; color: #cbd5e1;">कमीशन</span></p>
+            <p style="font-size: 16px; font-weight: 900; color: #60a5fa; margin: 0;">30%</p>
           </div>
 
+          <!-- LEVEL 5: 35% -->
           <div style="background: rgba(30, 41, 59, 0.9); border-left: 4px solid #a855f7; border-radius: 8px; padding: 8px 12px; display: flex; justify-content: space-between; align-items: center; text-align: left;">
             <div>
-              <p style="font-size: 12px; font-weight: bold; color: #c084fc; margin: 0;">लेवल 5 (रॉयल्टी)</p>
-              <p style="font-size: 9px; color: #94a3b8; margin: 1px 0 0 0;">5th जनरेशन टीम</p>
+              <p style="font-size: 12px; font-weight: bold; color: #c084fc; margin: 0;">LEVEL 5 (Ultimate Level)</p>
+              <p style="font-size: 9px; color: #94a3b8; margin: 1px 0 0 0;">Unlimited Growth Potential</p>
             </div>
-            <p style="font-size: 15px; font-weight: 900; color: #f472b6; margin: 0;">5% <span style="font-size: 9px; font-weight: normal; color: #cbd5e1;">रॉयल्टी</span></p>
+            <p style="font-size: 16px; font-weight: 900; color: #f472b6; margin: 0;">35%</p>
           </div>
         </div>
 
         <div style="background: #0f172a; border-radius: 12px; padding: 10px; text-align: left; font-size: 10px; color: #cbd5e1; border: 1px solid #334155;">
-          <p style="font-weight: bold; color: #f59e0b; margin: 0 0 4px 0;">💡 काम कैसे करना है?</p>
-          <ul style="margin: 0; padding-left: 14px; line-height: 1.6;">
-            <li>1. अपनी पसंद का प्लान (₹100, ₹200, ₹500, ₹2000) चुनें।</li>
-            <li>2. अपने लिंक से लोगों को जॉइन करवाएं।</li>
-            <li>3. डायरेक्ट जॉइन पर <b>50%</b> तुरंत कमाएं।</li>
-            <li>4. लेवल 2 से 5 तक टीम कमीशन पाएं।</li>
-          </ul>
+          <p style="font-weight: bold; color: #f59e0b; margin: 0 0 4px 0;">🚀 HOW P.S NETWORK WORKS:</p>
+          <p style="margin: 2px 0;">अपने पसंदीदा प्लान (₹100, ₹200, ₹500, ₹1000, ₹2000) से आईडी एक्टिवेट करें और Level 1 से Level 5 तक कमीशन कमाएं।</p>
         </div>
 
       </div>
@@ -171,94 +171,9 @@
       </button>
     </div>
 
-    <!-- 3. MEMBER ID CARD SECTION -->
-    <div class="flex flex-col items-center my-6">
-      <div id="captureCard" style="width: 320px; background: #1e293b; border-radius: 16px; border: 2px solid #3b82f6; overflow: hidden; color: #ffffff; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.5);">
-        
-        <div style="background: linear-gradient(135deg, #2563eb, #1d4ed8); padding: 12px; border-bottom: 2px solid #60a5fa;">
-          <h2 style="font-size: 18px; font-weight: bold; margin: 0;">P.S NETWORK</h2>
-          <p style="font-size: 10px; color: #93c5fd; margin: 2px 0 0 0;">ऑफिशियल मेम्बर पहचान पत्र (ID Card)</p>
-        </div>
-
-        <div style="margin-top: 15px;">
-          <div style="width: 75px; height: 75px; border-radius: 50%; background: linear-gradient(135deg, #3b82f6, #1e40af); border: 3px solid #38bdf8; margin: 0 auto; display: flex; align-items: center; justify-content: center;">
-            <span style="font-size: 22px; font-weight: 900; color: #ffffff; font-style: italic;">P.S</span>
-          </div>
-          <span id="cardLevelTag" style="display: inline-block; background: #f59e0b; color: #000; font-size: 10px; font-weight: bold; padding: 3px 12px; border-radius: 12px; margin-top: 8px;">VIP एक्टिव मेम्बर</span>
-        </div>
-
-        <div style="padding: 15px 20px; text-align: left; font-size: 12px;">
-          <div style="display: flex; justify-content: space-between; margin-bottom: 6px; border-bottom: 1px solid #334155; padding-bottom: 4px;">
-            <span style="color: #94a3b8;">मेम्बर का नाम:</span>
-            <span id="cardUserName" style="font-weight: bold; color: #fff;">पुनीत कुमार</span>
-          </div>
-          <div style="display: flex; justify-content: space-between; margin-bottom: 6px; border-bottom: 1px solid #334155; padding-bottom: 4px;">
-            <span style="color: #94a3b8;">यूजर आईडी:</span>
-            <span id="cardUserId" style="font-weight: bold; color: #fff;">PSN-88392</span>
-          </div>
-          <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
-            <span style="color: #94a3b8;">पद (Designation):</span>
-            <span style="color: #4ade80; font-weight: bold;">वेरीफाइड डिस्ट्रीब्यूटर</span>
-          </div>
-        </div>
-
-        <div style="background: #0f172a; padding: 8px 15px; font-size: 9px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #334155;">
-          <div style="text-align: left;">
-            <p style="color: #cbd5e1; font-weight: bold; margin: 0;">जॉइन करने के लिए स्कैन करें</p>
-            <p style="color: #64748b; margin: 1px 0 0 0;">P.S Network Official</p>
-          </div>
-          <img id="cardQrCode" src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=https://punitkumar3375-hash.github.io/P.S-NETWORK-MARKETING-AAP/" style="width: 38px; height: 38px; background: #fff; padding: 2px; border-radius: 4px;" alt="QR Code">
-        </div>
-
-      </div>
-
-      <button onclick="downloadCard()" style="margin-top: 10px; background: #2563eb; color: #fff; font-weight: bold; padding: 8px 18px; border-radius: 8px; border: none; cursor: pointer; font-size: 12px;">
-        📥 ID कार्ड फोटो डाउनलोड करें
-      </button>
-    </div>
-
-    <!-- 4. OFFICIAL JOINING LETTER SECTION -->
-    <div class="flex flex-col items-center my-6">
-      <div id="captureLetter" style="width: 320px; background: #ffffff; color: #1e293b; border-radius: 12px; padding: 18px; box-shadow: 0 10px 25px rgba(0,0,0,0.3); border: 2px solid #2563eb; text-align: left;">
-        
-        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #2563eb; padding-bottom: 8px; margin-bottom: 10px;">
-          <div>
-            <h1 style="font-size: 16px; font-weight: 800; color: #2563eb; margin: 0;">P.S NETWORK</h1>
-            <p style="font-size: 8px; color: #64748b; margin: 0; text-transform: uppercase;">Official Appointment</p>
-          </div>
-          <p style="margin: 0; font-size: 8px; color: #64748b;">Date: 07/08/2026</p>
-        </div>
-
-        <div style="font-size: 10px; line-height: 1.4; color: #334155;">
-          <p style="margin-bottom: 6px;"><b>प्रिय पार्टनर,</b></p>
-          <p style="margin-bottom: 6px;"><b>P.S Network</b> में आपका स्वागत है। हम आपके आधिकारिक <b>इन्डिपेन्डेंट डिस्ट्रीब्यूटर</b> बनने की पुष्टि करते हैं।</p>
-
-          <div style="background: #f1f5f9; padding: 6px 8px; border-radius: 6px; border-left: 3px solid #2563eb; margin: 8px 0; font-size: 9px;">
-            <p style="margin: 2px 0;"><b>नाम:</b> पुनीत कुमार</p>
-            <p style="margin: 2px 0;"><b>यूजर आईडी:</b> PSN-88392</p>
-            <p style="margin: 2px 0;"><b>स्टेटस:</b> <span style="color: #16a34a; font-weight: bold;">एक्टिव पार्टनर (Active)</span></p>
-          </div>
-        </div>
-
-        <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 12px; border-top: 1px dashed #cbd5e1; padding-top: 6px;">
-          <p style="font-size: 8px; color: #94a3b8; margin: 0;">Digital Certificate</p>
-          <div style="text-align: center;">
-            <p style="font-family: cursive; font-size: 11px; font-weight: bold; color: #1e3a8a; margin: 0;">P.S Network</p>
-            <p style="font-size: 7px; color: #475569; border-top: 1px solid #94a3b8; margin: 0;">ऑथराइज्ड स्टाम्प</p>
-          </div>
-        </div>
-
-      </div>
-
-      <button onclick="downloadLetter()" style="margin-top: 10px; background: #16a34a; color: #fff; font-weight: bold; padding: 8px 18px; border-radius: 8px; border: none; cursor: pointer; font-size: 12px;">
-        📄 जॉइनिंग लेटर डाउनलोड करें
-      </button>
-    </div>
-
   </div>
 
   <script>
-    // Dynamically update QR code when user changes plan package
     function updateQrCode() {
       const selectedAmount = document.getElementById('planSelect').value;
       const upiId = "6397969337@ptyes";
@@ -291,31 +206,13 @@
 
     function handleAuth(e, type) {
       e.preventDefault();
-      alert(type === 'login' ? "लॉगिन सफल हुआ!" : "रजिस्ट्रेशन विवरण सबमिट हो गया है! UTR वेरिफिकेशन के बाद आईडी चालू हो जाएगी।");
-    }
-
-    function downloadCard() {
-      html2canvas(document.getElementById("captureCard"), { scale: 3 }).then(canvas => {
-        const link = document.createElement("a");
-        link.download = "PS_Network_ID_Card.png";
-        link.href = canvas.toDataURL("image/png");
-        link.click();
-      });
-    }
-
-    function downloadLetter() {
-      html2canvas(document.getElementById("captureLetter"), { scale: 3 }).then(canvas => {
-        const link = document.createElement("a");
-        link.download = "PS_Network_Joining_Letter.png";
-        link.href = canvas.toDataURL("image/png");
-        link.click();
-      });
+      alert(type === 'login' ? "लॉगिन सफल हुआ!" : "रजिस्ट्रेशन सबमिट हो गया है!");
     }
 
     function downloadPlanPoster() {
       html2canvas(document.getElementById("capturePlanPoster"), { scale: 3 }).then(canvas => {
         const link = document.createElement("a");
-        link.download = "PS_Network_Hindi_Plan.png";
+        link.download = "PS_Network_Plan.png";
         link.href = canvas.toDataURL("image/png");
         link.click();
       });
