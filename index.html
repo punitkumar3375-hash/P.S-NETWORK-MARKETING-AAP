@@ -1,122 +1,315 @@
-<!-- P.S NETWORK FULL PLAN DETAILS POSTER -->
-<div class="flex flex-col items-center my-6">
-  
-  <div id="capturePlanPoster" style="width: 340px; background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%); border-radius: 20px; border: 2px solid #3b82f6; padding: 20px 16px; color: #ffffff; text-align: center; font-family: sans-serif; box-shadow: 0 12px 30px rgba(0,0,0,0.6); position: relative;">
-    
-    <!-- Top Badge Header -->
-    <div style="background: linear-gradient(135deg, #2563eb, #1d4ed8); border-radius: 12px; padding: 12px 10px; margin-bottom: 16px; border: 1px solid #60a5fa;">
-      <h2 style="font-size: 22px; font-weight: 900; margin: 0; text-transform: uppercase; letter-spacing: 1px; color: #ffffff; text-shadow: 0 2px 4px rgba(0,0,0,0.4);">P.S NETWORK</h2>
-      <p style="font-size: 11px; color: #f59e0b; font-weight: bold; margin: 3px 0 0 0; text-transform: uppercase; letter-spacing: 1px;">Official Business Plan Guide</p>
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>P.S Network - Official Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- html2canvas Library for Downloads -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <style>
+    body { background: #0f172a; color: white; font-family: sans-serif; }
+    .glass { background: rgba(30, 41, 59, 0.8); backdrop-filter: blur(10px); }
+  </style>
+</head>
+<body class="p-4 flex flex-col items-center min-h-screen" onload="fetchStats()">
+
+  <!-- Main Container -->
+  <div id="authPage" class="max-w-md w-full space-y-6 mt-4">
+
+    <!-- Header Title -->
+    <div class="text-center mb-2">
+      <h1 class="text-3xl font-black italic text-blue-500 uppercase">P.S NETWORK</h1>
+      <p class="text-xs text-slate-400 tracking-wider">OFFICIAL MEMBER PORTAL</p>
     </div>
 
-    <!-- Joining Fee Banner -->
-    <div style="background: rgba(59, 130, 246, 0.15); border: 1px dashed #3b82f6; border-radius: 10px; padding: 10px; margin-bottom: 16px;">
-      <p style="font-size: 11px; color: #cbd5e1; margin: 0;">Starter Plan Membership Fee</p>
-      <p style="font-size: 24px; font-weight: 900; color: #4ade80; margin: 2px 0 0 0;">₹100 <span style="font-size: 12px; font-weight: normal; color: #94a3b8;">/ One Time</span></p>
+    <!-- 1. OFFICIAL ID CARD SECTION -->
+    <div class="flex flex-col items-center my-4">
+      <div id="captureCard" style="width: 320px; background: #1e293b; border-radius: 16px; border: 2px solid #3b82f6; overflow: hidden; color: #ffffff; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.5);">
+        
+        <div style="background: linear-gradient(135deg, #2563eb, #1d4ed8); padding: 12px; border-bottom: 2px solid #60a5fa;">
+          <h2 style="font-size: 18px; font-weight: bold; margin: 0; text-transform: uppercase;">P.S NETWORK</h2>
+          <p style="font-size: 10px; color: #93c5fd; margin: 2px 0 0 0; text-transform: uppercase; letter-spacing: 1px;">Official Member Identity Card</p>
+        </div>
+
+        <div style="margin-top: 15px;">
+          <div style="width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg, #3b82f6, #1e40af); border: 3px solid #38bdf8; margin: 0 auto; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,0.4);">
+            <span style="font-size: 24px; font-weight: 900; color: #ffffff; font-style: italic; letter-spacing: -1px;">P.S</span>
+          </div>
+          <span id="cardLevelTag" style="display: inline-block; background: #f59e0b; color: #000; font-size: 11px; font-weight: bold; padding: 3px 12px; border-radius: 12px; margin-top: 10px;">LEVEL 1 (₹100 PLAN)</span>
+        </div>
+
+        <div style="padding: 15px 20px; text-align: left; font-size: 13px;">
+          <div style="display: flex; justify-content: space-between; margin-bottom: 8px; border-bottom: 1px solid #334155; padding-bottom: 4px;">
+            <span style="color: #94a3b8;">Member Name:</span>
+            <span id="cardUserName" style="font-weight: bold; color: #fff;">Punit Kumar</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; margin-bottom: 8px; border-bottom: 1px solid #334155; padding-bottom: 4px;">
+            <span style="color: #94a3b8;">User ID:</span>
+            <span id="cardUserId" style="font-weight: bold; color: #fff;">PSN-88392</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; margin-bottom: 8px; border-bottom: 1px solid #334155; padding-bottom: 4px;">
+            <span style="color: #94a3b8;">Direct Referrals:</span>
+            <span id="cardUserJoins" style="color: #f59e0b; font-weight: bold;">15 Active (R)</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+            <span style="color: #94a3b8;">Designation:</span>
+            <span style="color: #4ade80; font-weight: bold;">Verified Distributor</span>
+          </div>
+        </div>
+
+        <div style="background: #0f172a; padding: 10px 15px; font-size: 10px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #334155;">
+          <div style="text-align: left;">
+            <p style="color: #cbd5e1; font-weight: bold; margin: 0;">Scan to Join Under Me</p>
+            <p style="color: #64748b; margin: 2px 0 0 0;">P.S Network Official</p>
+          </div>
+          <img id="cardQrCode" src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=https://punitkumar3375-hash.github.io/P.S-NETWORK-MARKETING-AAP/" style="width: 42px; height: 42px; background: #fff; padding: 2px; border-radius: 4px;" alt="QR Code">
+        </div>
+
+      </div>
+
+      <button onclick="downloadCard()" style="margin-top: 10px; background: #2563eb; color: #fff; font-weight: bold; padding: 8px 18px; border-radius: 8px; border: none; cursor: pointer; font-size: 13px;">
+        📥 Download ID Card Photo
+      </button>
     </div>
 
-    <!-- Level Commission Breakdown Table -->
-    <h3 style="font-size: 13px; font-weight: bold; color: #38bdf8; text-transform: uppercase; margin: 0 0 10px 0; letter-spacing: 0.5px;">📊 5-Level Commission Structure</h3>
-    
-    <div style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px;">
+    <!-- 2. OFFICIAL JOINING LETTER SECTION -->
+    <div class="flex flex-col items-center my-6">
+      <div id="captureLetter" style="width: 320px; background: #ffffff; color: #1e293b; border-radius: 12px; padding: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.3); border: 2px solid #2563eb; text-align: left;">
+        
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #2563eb; padding-bottom: 10px; margin-bottom: 12px;">
+          <div>
+            <h1 style="font-size: 18px; font-weight: 800; color: #2563eb; margin: 0;">P.S NETWORK</h1>
+            <p style="font-size: 8px; color: #64748b; margin: 0; text-transform: uppercase;">Official Appointment</p>
+          </div>
+          <div style="text-align: right; font-size: 9px; color: #64748b;">
+            <p style="margin: 0;">Date: 07/08/2026</p>
+          </div>
+        </div>
+
+        <div style="font-size: 11px; line-height: 1.4; color: #334155;">
+          <p style="margin-bottom: 8px;"><b>Dear Partner,</b></p>
+          <p style="margin-bottom: 8px;">
+            Welcome to <b>P.S Network</b>. We proudly confirm your registration as an official <b>Independent Distributor</b>.
+          </p>
+
+          <div style="background: #f1f5f9; padding: 8px; border-radius: 6px; border-left: 3px solid #2563eb; margin: 10px 0; font-size: 10px;">
+            <p style="margin: 2px 0;"><b>Name:</b> <span id="letterName">Punit Kumar</span></p>
+            <p style="margin: 2px 0;"><b>User ID:</b> <span id="letterId">PSN-88392</span></p>
+            <p style="margin: 2px 0;"><b>Status:</b> <span style="color: #16a34a; font-weight: bold;">Active Partner</span></p>
+          </div>
+
+          <p style="margin-bottom: 10px;">
+            You are authorized to grow your team, refer new members, and earn commissions as per company rules.
+          </p>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 15px; border-top: 1px dashed #cbd5e1; padding-top: 8px;">
+          <div style="font-size: 8px; color: #94a3b8;">
+            <p style="margin: 0;">Verified Digital Certificate</p>
+          </div>
+          <div style="text-align: center;">
+            <p style="font-family: cursive; font-size: 12px; font-weight: bold; color: #1e3a8a; margin: 0;">P.S Network</p>
+            <p style="font-size: 8px; color: #475569; border-top: 1px solid #94a3b8; margin-top: 1px;">Authorized Stamp</p>
+          </div>
+        </div>
+
+      </div>
+
+      <button onclick="downloadLetter()" style="margin-top: 10px; background: #16a34a; color: #fff; font-weight: bold; padding: 8px 18px; border-radius: 8px; border: none; cursor: pointer; font-size: 13px;">
+        📄 Download Joining Letter
+      </button>
+    </div>
+
+    <!-- 3. FULL PLAN DETAILS POSTER SECTION -->
+    <div class="flex flex-col items-center my-6">
       
-      <!-- Level 1 -->
-      <div style="background: rgba(30, 41, 59, 0.9); border-left: 4px solid #f59e0b; border-radius: 8px; padding: 8px 12px; display: flex; justify-content: space-between; align-items: center; text-align: left;">
-        <div>
-          <p style="font-size: 12px; font-weight: bold; color: #f59e0b; margin: 0;">LEVEL 1 (Direct Team)</p>
-          <p style="font-size: 10px; color: #94a3b8; margin: 2px 0 0 0;">Unlimited Direct Referrals</p>
+      <div id="capturePlanPoster" style="width: 320px; background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%); border-radius: 20px; border: 2px solid #3b82f6; padding: 20px 16px; color: #ffffff; text-align: center; box-shadow: 0 12px 30px rgba(0,0,0,0.6);">
+        
+        <div style="background: linear-gradient(135deg, #2563eb, #1d4ed8); border-radius: 12px; padding: 12px 10px; margin-bottom: 16px; border: 1px solid #60a5fa;">
+          <h2 style="font-size: 22px; font-weight: 900; margin: 0; text-transform: uppercase; color: #ffffff;">P.S NETWORK</h2>
+          <p style="font-size: 11px; color: #f59e0b; font-weight: bold; margin: 3px 0 0 0; text-transform: uppercase;">Official Business Plan Guide</p>
         </div>
-        <div style="text-align: right;">
-          <p style="font-size: 13px; font-weight: 900; color: #4ade80; margin: 0;">High Income</p>
-          <p style="font-size: 9px; color: #cbd5e1; margin: 0;">Per Referral</p>
+
+        <div style="background: rgba(59, 130, 246, 0.15); border: 1px dashed #3b82f6; border-radius: 10px; padding: 10px; margin-bottom: 16px;">
+          <p style="font-size: 11px; color: #cbd5e1; margin: 0;">Starter Plan Membership Fee</p>
+          <p style="font-size: 24px; font-weight: 900; color: #4ade80; margin: 2px 0 0 0;">₹100 <span style="font-size: 12px; font-weight: normal; color: #94a3b8;">/ One Time</span></p>
         </div>
+
+        <h3 style="font-size: 13px; font-weight: bold; color: #38bdf8; text-transform: uppercase; margin: 0 0 10px 0;">📊 5-Level Commission Structure</h3>
+        
+        <div style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px;">
+          <div style="background: rgba(30, 41, 59, 0.9); border-left: 4px solid #f59e0b; border-radius: 8px; padding: 8px 12px; display: flex; justify-content: space-between; align-items: center; text-align: left;">
+            <div>
+              <p style="font-size: 12px; font-weight: bold; color: #f59e0b; margin: 0;">LEVEL 1 (Direct Team)</p>
+              <p style="font-size: 10px; color: #94a3b8; margin: 2px 0 0 0;">Unlimited Direct Referrals</p>
+            </div>
+            <p style="font-size: 12px; font-weight: 900; color: #4ade80; margin: 0;">High Income</p>
+          </div>
+
+          <div style="background: rgba(30, 41, 59, 0.9); border-left: 4px solid #3b82f6; border-radius: 8px; padding: 8px 12px; display: flex; justify-content: space-between; align-items: center; text-align: left;">
+            <div>
+              <p style="font-size: 12px; font-weight: bold; color: #60a5fa; margin: 0;">LEVEL 2 (Team Level 1)</p>
+              <p style="font-size: 10px; color: #94a3b8; margin: 2px 0 0 0;">Automatic Team Bonus</p>
+            </div>
+            <p style="font-size: 12px; font-weight: 900; color: #ffffff; margin: 0;">Passive Earn</p>
+          </div>
+
+          <div style="background: rgba(30, 41, 59, 0.9); border-left: 4px solid #3b82f6; border-radius: 8px; padding: 8px 12px; display: flex; justify-content: space-between; align-items: center; text-align: left;">
+            <div>
+              <p style="font-size: 12px; font-weight: bold; color: #60a5fa; margin: 0;">LEVEL 3 (Team Level 2)</p>
+              <p style="font-size: 10px; color: #94a3b8; margin: 2px 0 0 0;">Network Expansion</p>
+            </div>
+            <p style="font-size: 12px; font-weight: 900; color: #ffffff; margin: 0;">Passive Earn</p>
+          </div>
+
+          <div style="background: rgba(30, 41, 59, 0.9); border-left: 4px solid #3b82f6; border-radius: 8px; padding: 8px 12px; display: flex; justify-content: space-between; align-items: center; text-align: left;">
+            <div>
+              <p style="font-size: 12px; font-weight: bold; color: #60a5fa; margin: 0;">LEVEL 4 (Deep Network)</p>
+              <p style="font-size: 10px; color: #94a3b8; margin: 2px 0 0 0;">Indirect Team Growth</p>
+            </div>
+            <p style="font-size: 12px; font-weight: 900; color: #ffffff; margin: 0;">Passive Earn</p>
+          </div>
+
+          <div style="background: rgba(30, 41, 59, 0.9); border-left: 4px solid #a855f7; border-radius: 8px; padding: 8px 12px; display: flex; justify-content: space-between; align-items: center; text-align: left;">
+            <div>
+              <p style="font-size: 12px; font-weight: bold; color: #c084fc; margin: 0;">LEVEL 5 (Ultimate Level)</p>
+              <p style="font-size: 10px; color: #94a3b8; margin: 2px 0 0 0;">Unlimited Growth Potential</p>
+            </div>
+            <p style="font-size: 12px; font-weight: 900; color: #f472b6; margin: 0;">Max Royalty</p>
+          </div>
+        </div>
+
+        <div style="background: #0f172a; border-radius: 12px; padding: 12px; text-align: left; font-size: 11px; color: #cbd5e1; margin-bottom: 12px; border: 1px solid #334155;">
+          <p style="font-weight: bold; color: #f59e0b; margin: 0 0 6px 0; text-transform: uppercase;">🚀 How P.S Network Works:</p>
+          <ul style="margin: 0; padding-left: 16px; line-height: 1.6;">
+            <li>₹100 वाले प्लान के साथ अपनी आईडी एक्टिवेट करें।</li>
+            <li>अपने रेफरल लिंक/QR कोड से लोगों को जोड़ें।</li>
+            <li>Level 1 से Level 5 तक कमीशन कमाएं।</li>
+          </ul>
+        </div>
+
       </div>
 
-      <!-- Level 2 -->
-      <div style="background: rgba(30, 41, 59, 0.9); border-left: 4px solid #3b82f6; border-radius: 8px; padding: 8px 12px; display: flex; justify-content: space-between; align-items: center; text-align: left;">
-        <div>
-          <p style="font-size: 12px; font-weight: bold; color: #60a5fa; margin: 0;">LEVEL 2 (Team Level 1)</p>
-          <p style="font-size: 10px; color: #94a3b8; margin: 2px 0 0 0;">Automatic Team Bonus</p>
-        </div>
-        <div style="text-align: right;">
-          <p style="font-size: 13px; font-weight: 900; color: #ffffff; margin: 0;">Passive Earn</p>
-          <p style="font-size: 9px; color: #cbd5e1; margin: 0;">Level Bonus</p>
-        </div>
-      </div>
-
-      <!-- Level 3 -->
-      <div style="background: rgba(30, 41, 59, 0.9); border-left: 4px solid #3b82f6; border-radius: 8px; padding: 8px 12px; display: flex; justify-content: space-between; align-items: center; text-align: left;">
-        <div>
-          <p style="font-size: 12px; font-weight: bold; color: #60a5fa; margin: 0;">LEVEL 3 (Team Level 2)</p>
-          <p style="font-size: 10px; color: #94a3b8; margin: 2px 0 0 0;">Network Expansion</p>
-        </div>
-        <div style="text-align: right;">
-          <p style="font-size: 13px; font-weight: 900; color: #ffffff; margin: 0;">Passive Earn</p>
-          <p style="font-size: 9px; color: #cbd5e1; margin: 0;">Level Bonus</p>
-        </div>
-      </div>
-
-      <!-- Level 4 -->
-      <div style="background: rgba(30, 41, 59, 0.9); border-left: 4px solid #3b82f6; border-radius: 8px; padding: 8px 12px; display: flex; justify-content: space-between; align-items: center; text-align: left;">
-        <div>
-          <p style="font-size: 12px; font-weight: bold; color: #60a5fa; margin: 0;">LEVEL 4 (Deep Network)</p>
-          <p style="font-size: 10px; color: #94a3b8; margin: 2px 0 0 0;">Indirect Team Growth</p>
-        </div>
-        <div style="text-align: right;">
-          <p style="font-size: 13px; font-weight: 900; color: #ffffff; margin: 0;">Passive Earn</p>
-          <p style="font-size: 9px; color: #cbd5e1; margin: 0;">Level Bonus</p>
-        </div>
-      </div>
-
-      <!-- Level 5 -->
-      <div style="background: rgba(30, 41, 59, 0.9); border-left: 4px solid #a855f7; border-radius: 8px; padding: 8px 12px; display: flex; justify-content: space-between; align-items: center; text-align: left;">
-        <div>
-          <p style="font-size: 12px; font-weight: bold; color: #c084fc; margin: 0;">LEVEL 5 (Ultimate Level)</p>
-          <p style="font-size: 10px; color: #94a3b8; margin: 2px 0 0 0;">Unlimited Growth Potential</p>
-        </div>
-        <div style="text-align: right;">
-          <p style="font-size: 13px; font-weight: 900; color: #f472b6; margin: 0;">Max Royalty</p>
-          <p style="font-size: 9px; color: #cbd5e1; margin: 0;">Level Bonus</p>
-        </div>
-      </div>
+      <button onclick="downloadPlanPoster()" style="margin-top: 10px; background: #2563eb; color: #ffffff; font-weight: bold; padding: 8px 18px; border-radius: 8px; border: none; cursor: pointer; font-size: 13px;">
+        📥 Download Full Plan Poster
+      </button>
 
     </div>
 
-    <!-- Work Process Key Points -->
-    <div style="background: #0f172a; border-radius: 12px; padding: 12px; text-align: left; font-size: 11px; color: #cbd5e1; margin-bottom: 12px; border: 1px solid #334155;">
-      <p style="font-weight: bold; color: #f59e0b; margin: 0 0 6px 0; text-transform: uppercase;">🚀 How P.S Network Works:</p>
-      <ul style="margin: 0; padding-left: 16px; line-height: 1.6;">
-        <li>₹100 वाले प्लान के साथ अपनी आईडी एक्टिवेट करें।</li>
-        <li>अपने रेफरल लिंक/QR कोड से अनलिमिटेड लोगों को जोड़ें।</li>
-        <li>Level 1 से Level 5 तक हर जॉइनिंग पर ऑटोमैटिक कमीशन कमाएं।</li>
-        <li>Instant Wallet payout system उपलब्ध है।</li>
-      </ul>
+    <!-- 4. LEVEL 1 TO LEVEL 5 UNLIMITED NETWORK BOXES -->
+    <div class="glass p-5 rounded-[2rem] text-center shadow-2xl my-6 border border-blue-500/30">
+      <h3 class="text-base font-bold text-blue-400 mb-4 uppercase tracking-wide">My 5-Level Network Team</h3>
+      
+      <div class="grid grid-cols-1 gap-3">
+        <div class="bg-slate-900/80 p-3 rounded-xl border border-blue-500/50 flex justify-between items-center">
+          <div class="text-left">
+            <p class="text-xs font-bold text-blue-400">LEVEL 1 (Direct)</p>
+            <p class="text-[10px] text-slate-400">Unlimited Direct Joins</p>
+          </div>
+          <div class="text-right">
+            <span id="level1Count" class="text-lg font-black text-amber-400">0</span>
+            <span class="text-[10px] text-slate-400 block">Members</span>
+          </div>
+        </div>
+
+        <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-700 flex justify-between items-center">
+          <div class="text-left">
+            <p class="text-xs font-bold text-slate-300">LEVEL 2</p>
+            <p class="text-[10px] text-slate-400">Team Network</p>
+          </div>
+          <div class="text-right">
+            <span id="level2Count" class="text-lg font-black text-amber-400">0</span>
+            <span class="text-[10px] text-slate-400 block">Members</span>
+          </div>
+        </div>
+
+        <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-700 flex justify-between items-center">
+          <div class="text-left">
+            <p class="text-xs font-bold text-slate-300">LEVEL 3</p>
+            <p class="text-[10px] text-slate-400">Team Network</p>
+          </div>
+          <div class="text-right">
+            <span id="level3Count" class="text-lg font-black text-amber-400">0</span>
+            <span class="text-[10px] text-slate-400 block">Members</span>
+          </div>
+        </div>
+
+        <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-700 flex justify-between items-center">
+          <div class="text-left">
+            <p class="text-xs font-bold text-slate-300">LEVEL 4</p>
+            <p class="text-[10px] text-slate-400">Team Network</p>
+          </div>
+          <div class="text-right">
+            <span id="level4Count" class="text-lg font-black text-amber-400">0</span>
+            <span class="text-[10px] text-slate-400 block">Members</span>
+          </div>
+        </div>
+
+        <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-700 flex justify-between items-center">
+          <div class="text-left">
+            <p class="text-xs font-bold text-slate-300">LEVEL 5</p>
+            <p class="text-[10px] text-slate-400">Team Network</p>
+          </div>
+          <div class="text-right">
+            <span id="level5Count" class="text-lg font-black text-amber-400">0</span>
+            <span class="text-[10px] text-slate-400 block">Members</span>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <!-- Official Stamp Footer -->
-    <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed #334155; padding-top: 10px; font-size: 9px; color: #64748b;">
-      <span>Verified Official Plan</span>
-      <span style="font-weight: bold; color: #3b82f6;">P.S NETWORK OFFICIAL</span>
+    <!-- 5. TOTAL OVERVIEW STATS -->
+    <div class="glass p-6 rounded-[2rem] text-center shadow-2xl mb-8">
+      <div class="grid grid-cols-2 gap-4">
+        <div class="bg-slate-900/50 p-3 rounded-2xl border border-blue-500/30">
+          <p class="text-[9px] text-blue-400 font-bold uppercase">Total Team Joins</p>
+          <p id="statTotal" class="text-2xl font-black italic">1</p>
+        </div>
+        <div class="bg-slate-900/50 p-3 rounded-2xl border border-blue-500/30">
+          <p class="text-[9px] text-blue-400 font-bold uppercase">Today Joins</p>
+          <p id="statToday" class="text-2xl font-black italic">7</p>
+        </div>
+      </div>
     </div>
 
   </div>
 
-  <!-- Download Plan Poster Button -->
-  <button onclick="downloadPlanPoster()" style="margin-top: 12px; background: #2563eb; color: #ffffff; font-weight: bold; padding: 9px 20px; border-radius: 10px; border: none; cursor: pointer; font-size: 13px; box-shadow: 0 4px 12px rgba(37,99,235,0.4);">
-    📥 Download Full Plan Poster
-  </button>
+  <!-- JavaScript Section -->
+  <script>
+    function fetchStats() {
+      console.log("P.S Network Dashboard Active");
+    }
 
-</div>
+    function downloadCard() {
+      const card = document.getElementById("captureCard");
+      html2canvas(card, { scale: 3 }).then(canvas => {
+        const link = document.createElement("a");
+        link.download = "PS_Network_ID_Card.png";
+        link.href = canvas.toDataURL("image/png");
+        link.click();
+      });
+    }
 
-<!-- Download Script for Poster -->
-<script>
-function downloadPlanPoster() {
-  const poster = document.getElementById("capturePlanPoster");
-  html2canvas(poster, { scale: 3 }).then(canvas => {
-    const link = document.createElement("a");
-    link.download = "PS_Network_Full_Plan_Details.png";
-    link.href = canvas.toDataURL("image/png");
-    link.click();
-  });
-}
-</script>
+    function downloadLetter() {
+      const letter = document.getElementById("captureLetter");
+      html2canvas(letter, { scale: 3 }).then(canvas => {
+        const link = document.createElement("a");
+        link.download = "PS_Network_Joining_Letter.png";
+        link.href = canvas.toDataURL("image/png");
+        link.click();
+      });
+    }
+
+    function downloadPlanPoster() {
+      const poster = document.getElementById("capturePlanPoster");
+      html2canvas(poster, { scale: 3 }).then(canvas => {
+        const link = document.createElement("a");
+        link.download = "PS_Network_Full_Plan_Details.png";
+        link.href = canvas.toDataURL("image/png");
+        link.click();
+      });
+    }
+  </script>
+</body>
+</html>
