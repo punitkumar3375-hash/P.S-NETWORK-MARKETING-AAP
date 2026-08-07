@@ -1,21 +1,117 @@
 <!DOCTYPE html>
 <html lang="hi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>P.S Network</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        body { background: #0f172a; color: white; font-family: sans-serif; }
-        .glass { background: rgba(30, 41, 59, 0.8); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }
-        .hidden-section { display: none !important; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>P.S Network</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { background: #0f172a; color: white; font-family: sans-serif; }
+    .glass { background: rgba(30, 41, 59, 0.8); backdrop-filter: blur(10px); }
+    .hidden-section { display: none !important; }
+
+    /* --- P.S Network ID Card Styling --- */
+    .id-card {
+      width: 320px;
+      margin: 15px auto;
+      background: #1e293b;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+      border: 2px solid #3b82f6;
+      overflow: hidden;
+      color: #ffffff;
+      text-align: center;
+    }
+    .card-header {
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      padding: 12px;
+      border-bottom: 2px solid #60a5fa;
+    }
+    .photo-area { margin-top: 12px; }
+    .user-img {
+      width: 75px;
+      height: 75px;
+      border-radius: 50%;
+      border: 3px solid #38bdf8;
+      margin: 0 auto;
+      object-fit: cover;
+    }
+    .level-tag {
+      display: inline-block;
+      background: #f59e0b;
+      color: #000;
+      font-size: 11px;
+      font-weight: bold;
+      padding: 3px 10px;
+      border-radius: 12px;
+      margin-top: 6px;
+    }
+    .user-details { padding: 12px 16px; text-align: left; font-size: 13px; }
+    .detail-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 6px;
+      border-bottom: 1px solid #334155;
+      padding-bottom: 4px;
+    }
+    .card-footer {
+      background: #0f172a;
+      padding: 10px 15px;
+      font-size: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+  </style>
 </head>
 <body class="p-4 flex flex-col items-center min-h-screen" onload="fetchStats()">
 
-    <div id="authPage" class="max-w-md w-full space-y-6 mt-10">
-        <div class="glass p-8 rounded-[2.5rem] text-center shadow-2xl">
-            <h1 class="text-4xl font-black italic text-blue-500 mb-2 uppercase">P.S NETWORK</h1>
+  <div id="authPage" class="max-w-md w-full space-y-6 mt-10">
+    
+    <!-- P.S Network Digital ID Card -->
+    <div class="id-card">
+      <div class="card-header">
+        <h2 style="font-size:18px; font-weight:bold;">P.S NETWORK</h2>
+        <p style="font-size:10px; color:#93c5fd;">OFFICIAL MEMBER CARD</p>
+      </div>
+
+      <div class="photo-area">
+        <img src="https://via.placeholder.com/80" class="user-img" alt="User Photo">
+        <br>
+        <span class="level-tag">LEVEL 1 (₹100 PLAN)</span>
+      </div>
+
+      <div class="user-details">
+        <div class="detail-row">
+          <span style="color:#94a3b8;">Name:</span>
+          <span id="userName">Akku</span>
+        </div>
+        <div class="detail-row">
+          <span style="color:#94a3b8;">User ID:</span>
+          <span id="userId">PSN-88392</span>
+        </div>
+        <div class="detail-row">
+          <span style="color:#94a3b8;">Direct Referrals:</span>
+          <span style="color:#f59e0b; font-weight:bold;">15 Active (R)</span>
+        </div>
+        <div class="detail-row">
+          <span style="color:#94a3b8;">Status:</span>
+          <span style="color:#4ade80; font-weight:bold;">Active Member</span>
+        </div>
+      </div>
+
+      <div class="card-footer">
+        <div style="text-align:left;">
+          <p style="color:#cbd5e1; font-weight:bold;">Scan to Join</p>
+          <p style="color:#64748b;">P.S Network App</p>
+        </div>
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=https://punitkumar3375-hash.github.io/P.S-NETWORK-MARKETING-AAP/" style="width:40px; height:40px; background:#fff; padding:2px; border-radius:4px;" alt="QR Code">
+      </div>
+    </div>
+
+    <!-- Original Dashboard Container -->
+    <div class="glass p-8 rounded-[2.5rem] text-center shadow-2xl">
+      <h1 class="text-4xl font-black italic text-blue-500 mb-2 uppercase">
             
             <div class="grid grid-cols-2 gap-4 my-6">
                 <div class="bg-slate-900/50 p-3 rounded-2xl border border-blue-500/20">
