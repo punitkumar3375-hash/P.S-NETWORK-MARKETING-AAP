@@ -119,13 +119,14 @@
   <script>
     const scriptURL = 'https://script.google.com/macros/s/AKfycbx0GJ8HVQGfOyMLwDs9bIqKFsr2yUkieMwfT2qH9d_I3m93WbaKMBmW6KO_WpL-jqa7Ig/exec';
 
+    // Levels Data Setup
     let userData = {
       activeLevel: 100,
       levels: [
-        { level: 1, price: 100, paid: true, members: 0, commRate: 15 },
-        { level: 2, price: 200, paid: false, members: 0, commRate: 40 },
-        { level: 3, price: 500, paid: false, members: 0, commRate: 125 },
-        { level: 4, price: 1000, paid: false, members: 0, commRate: 300 },
+        { level: 1, price: 100, paid: true, members: 0, commRate: 55 },
+        { level: 2, price: 200, paid: false, members: 0, commRate: 100 },
+        { level: 3, price: 500, paid: false, members: 0, commRate: 225 },
+        { level: 4, price: 1000, paid: false, members: 0, commRate: 400 },
         { level: 5, price: 2000, paid: false, members: 0, commRate: 700 }
       ]
     };
@@ -260,28 +261,47 @@
       container.innerHTML = '';
 
       userData.levels.forEach(item => {
-        const totalEarning = item.members * item.commRate;
-        const bonusTarget = 3;
-        const isBonusEarned = item.members >= bonusTarget;
-        const bonusAmount = item.price * 0.10;
+        // Recycle Calculation (Every 20 members = 1 Cycle Complete)
+        const recycleLimit = 20;
+        const totalCycles = Math.floor(item.members / recycleLimit);
+        const currentCycleMembers = item.members % recycleLimit;
+
+        // Bonus Calculation: 3 members joining gives 5% bonus per member
+        const perMemberBonusRate = item.price * 0.05; // 5% of package price
+        const isBonusActive = item.members >= 3;
+        const totalBonusEarned = isBonusActive ? (item.members * perMemberBonusRate) : 0;
+
+        // Base Level Income
+        const levelIncomeOnly = item.members * item.commRate;
+        const grandTotalIncome = levelIncomeOnly + totalBonusEarned;
 
         const card = document.createElement('div');
         card.className = `bg-slate-900/90 p-4 rounded-xl border transition-all ${item.paid ? 'border-emerald-500 cursor-pointer hover:border-emerald-400' : 'border-slate-800 locked-level'}`;
 
         let bonusBoxHTML = '';
         if (item.paid) {
-          if (isBonusEarned) {
+          if (isBonusActive) {
             bonusBoxHTML = `
               <div class="mt-2.5 p-2 bg-emerald-950/80 border border-emerald-500/50 rounded-lg text-[11px] text-emerald-300 font-bold">
-                🎉 3 Referrals Completed! Bonus Earned: +₹${bonusAmount}
+                🎁 3+ Members Bonus Active! (+₹${perMemberBonusRate}/member) <br>
+                Total Bonus: +₹${totalBonusEarned}
               </div>`;
           } else {
-            const need = bonusTarget - item.members;
+            const need = 3 - item.members;
             bonusBoxHTML = `
               <div class="mt-2.5 p-2 bg-amber-950/40 border border-amber-500/30 rounded-lg text-[11px] text-amber-400 font-medium">
-                🎯 Bonus Progress: ${item.members}/3 (${need} more needed for ₹${bonusAmount} Bonus)
+                🎯 Bonus Status: ${item.members}/3 (${need} more needed for 5% Bonus per member)
               </div>`;
           }
+        }
+
+        let recycleBoxHTML = '';
+        if (item.paid) {
+          recycleBoxHTML = `
+            <div class="mt-2 p-2 bg-blue-950/50 border border-blue-500/30 rounded-lg text-[11px] text-blue-300 flex justify-between items-center">
+              <span>🔄 Recycle Progress: <b>${currentCycleMembers}/${recycleLimit}</b></span>
+              <span class="bg-blue-600/80 text-white px-2 py-0.5 rounded text-[10px]">Cycles: ${totalCycles}</span>
+            </div>`;
         }
 
         card.innerHTML = `
@@ -299,10 +319,10 @@
                 <span class="font-bold text-blue-400 text-sm">${item.members} Members</span>
               </div>
               <div class="flex justify-between items-center bg-slate-800/60 p-2 rounded-lg">
-                <span class="text-slate-300">💰 Level Income:</span>
-                <span class="font-bold text-emerald-400 text-sm">₹${totalEarning}</span>
+                <span class="text-slate-300">💰 Total Income (with Bonus):</span>
+                <span class="font-bold text-emerald-400 text-sm">₹${grandTotalIncome}</span>
               </div>
-              ${bonusBoxHTML}
+              ${bonusBoxHTML}${recycleBoxHTML}
             </div>
           ` : `
             <button onclick="alert('Level ${item.level} unlock karne ke liye admin se sampark karein.')" class="w-full mt-3 bg-slate-800 text-slate-400 text-xs font-bold py-2 rounded-lg">
