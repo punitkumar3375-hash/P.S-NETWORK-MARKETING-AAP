@@ -3,14 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>P.S Network - Official Portal</title>
+  <title>P.S Network - Official Dashboard</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <style>
     body { background: #0f172a; color: white; font-family: sans-serif; }
     .glass { background: rgba(30, 41, 59, 0.85); backdrop-filter: blur(10px); }
-    .tab-btn.active { background: #2563eb; color: white; font-weight: bold; }
-    .locked-level { opacity: 0.4; filter: grayscale(1); pointer-events: none; position: relative; }
+    .locked-level { opacity: 0.5; filter: grayscale(0.8); }
   </style>
 </head>
 <body class="p-4 flex flex-col items-center min-h-screen">
@@ -20,242 +18,156 @@
     <!-- Header Title -->
     <div class="text-center mb-2">
       <h1 class="text-3xl font-black italic text-blue-500 uppercase tracking-wider">P.S NETWORK</h1>
-      <p class="text-xs text-slate-400 uppercase tracking-widest">ऑफिशियल नेटवर्क मार्केटिंग पोर्टल</p>
+      <p class="text-xs text-slate-400 uppercase tracking-widest">सदस्य डैशबोर्ड एवं लेवल इनकम</p>
     </div>
 
-    <!-- 1. LOGIN & JOIN TABS SECTION -->
-    <div id="authSection" class="glass p-6 rounded-[2rem] border border-blue-500/30 shadow-2xl">
+    <!-- DASHBOARD CONTAINER -->
+    <div class="glass p-6 rounded-[2rem] border border-blue-500/30 shadow-2xl space-y-4">
       
-      <div class="flex bg-slate-900 p-1 rounded-xl mb-6 border border-slate-700">
-        <button id="loginTabBtn" onclick="showForm('login')" class="tab-btn active w-1/2 py-2 text-xs rounded-lg text-slate-400 transition-all">लॉगिन (Login)</button>
-        <button id="joinTabBtn" onclick="showForm('join')" class="tab-btn w-1/2 py-2 text-xs rounded-lg text-slate-400 transition-all">जॉइन करें</button>
+      <div id="loadingText" class="text-center text-amber-400 font-bold text-sm py-4 animate-pulse">
+        ⏳ गूगल शीट से डेटा लोड हो रहा है...
       </div>
 
-      <!-- LOGIN FORM -->
-      <form id="loginForm" onsubmit="handleAuth(event, 'login')" class="space-y-4">
-        <h2 class="text-center text-sm font-bold text-blue-400 uppercase">खाता लॉगिन करें</h2>
-        <div>
-          <label class="text-[11px] text-slate-400 font-bold block mb-1">मोबाइल नंबर</label>
-          <input type="tel" id="loginMobile" placeholder="रजिस्टर्ड मोबाइल नंबर दर्ज करें" required class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-sm focus:outline-none focus:border-blue-500 text-white">
-        </div>
-        <div>
-          <label class="text-[11px] text-slate-400 font-bold block mb-1">अपना एक्टिवेटेड प्लान चुनें</label>
-          <select id="loginLevel" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-sm focus:outline-none focus:border-blue-500 text-amber-400 font-bold">
-            <option value="1">Level 1 - Starter (₹100)</option>
-            <option value="2">Level 2 - Basic (₹200)</option>
-            <option value="3">Level 3 - Pro (₹500)</option>
-            <option value="4">Level 4 - Advanced (₹1000)</option>
-            <option value="5">Level 5 - VIP (₹2000)</option>
-          </select>
-        </div>
-        <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 font-bold p-3 rounded-xl text-sm transition-all shadow-lg">लॉगिन करें</button>
-      </form>
-
-      <!-- JOIN FORM (CONNECTED TO GOOGLE SHEET) -->
-      <form id="joinForm" name="google-sheet" onsubmit="handleAuth(event, 'join')" class="space-y-4 hidden">
-        <h2 class="text-center text-sm font-bold text-amber-400 uppercase">नया रजिस्ट्रेशन करें</h2>
-        
-        <div>
-          <label class="text-[11px] text-slate-400 font-bold block mb-1">पूरा नाम</label>
-          <input type="text" name="Name" placeholder="अपना नाम लिखें" required class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-sm focus:outline-none focus:border-blue-500 text-white">
-        </div>
-
-        <div>
-          <label class="text-[11px] text-slate-400 font-bold block mb-1">मोबाइल नंबर</label>
-          <input type="tel" name="Mobile" placeholder="मोबाइल नंबर लिखें" required class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-sm focus:outline-none focus:border-blue-500 text-white">
-        </div>
-
-        <div>
-          <label class="text-[11px] text-amber-400 font-bold block mb-1">अपना प्लान/लेवल चुनें</label>
-          <select id="planSelect" name="Package" onchange="updateQrCode()" class="w-full bg-slate-900 border border-amber-500/50 rounded-xl p-3 text-sm focus:outline-none focus:border-amber-500 text-amber-300 font-bold">
-            <option value="100">Level 1 - ₹100</option>
-            <option value="200">Level 2 - ₹200</option>
-            <option value="500">Level 3 - ₹500</option>
-            <option value="1000">Level 4 - ₹1000</option>
-            <option value="2000">Level 5 - ₹2000</option>
-          </select>
-        </div>
-
-        <div>
-          <label class="text-[11px] text-slate-400 font-bold block mb-1">रेफरल आईडी (ऐच्छिक)</label>
-          <input type="text" name="Referral_ID" placeholder="PSN-XXXXX" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-sm focus:outline-none focus:border-blue-500 text-white">
-        </div>
-
-        <div class="bg-slate-900 p-4 rounded-xl border border-amber-500/50 text-center">
-          <p class="text-xs font-bold text-amber-400 mb-1">पेमेंट स्कैन करें (<span id="qrAmountText">₹100</span>)</p>
-          <p class="text-[10px] text-slate-400 mb-3">Paytm, PhonePe, Google Pay से स्कैन करें</p>
-          
-          <div class="flex justify-center mb-2">
-            <img id="paymentQr" src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=upi://pay?pa=6397969337@ptyes&pn=PS_Network&am=100&cu=INR" alt="Payment QR Code" class="w-40 h-40 bg-white p-2 rounded-lg border-2 border-amber-400">
-          </div>
-          <p class="text-[10px] text-slate-300 font-medium mb-1">UPI ID: <span class="text-amber-400 font-bold">6397969337@ptyes</span></p>
-          <p class="text-[10px] text-emerald-400 font-semibold">अमाउंट: <span id="displayAmount">₹100</span> (ऑटोमैटिक सेट)</p>
-        </div>
-
-        <div>
-          <label class="text-[11px] text-slate-400 font-bold block mb-1">पेमेंट UTR / Transaction ID</label>
-          <input type="text" name="Payment_UTR" placeholder="12 अंकों का UTR नंबर दर्ज करें" required class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-sm focus:outline-none focus:border-blue-500 text-white">
-        </div>
-
-        <button type="submit" id="submitBtn" class="w-full bg-amber-500 hover:bg-amber-600 font-bold text-slate-950 p-3 rounded-xl text-sm transition-all shadow-lg">सबमिट करें और ID एक्टिव करें</button>
-      </form>
-
-    </div>
-
-    <!-- 2. USER DASHBOARD (AFTER LOGIN - LEVEL SPECIFIC) -->
-    <div id="userDashboard" class="glass p-6 rounded-[2rem] border border-emerald-500/40 shadow-2xl hidden space-y-4">
-      <div class="flex justify-between items-center border-b border-slate-700 pb-3">
-        <div>
-          <h2 class="text-base font-bold text-emerald-400">सदस्य डैशबोर्ड</h2>
-          <p class="text-[11px] text-slate-400" id="dashUserInfo">यूजर आईडी: Active</p>
-        </div>
-        <button onclick="logout()" class="text-xs bg-red-600 hover:bg-red-700 px-3 py-1 rounded-lg font-bold">लॉगआउट</button>
+      <!-- LEVELS WRAPPER -->
+      <div id="levelsContainer" class="space-y-4 hidden">
+        <!-- JavaScript Dynamic Load -->
       </div>
 
-      <!-- LEVELS CONTAINER -->
-      <div class="space-y-3">
-        <p class="text-xs font-bold text-amber-400 uppercase">आपका एक्सेस स्तर (Levels Status):</p>
-        
-        <!-- LEVEL 1 -->
-        <div id="levelCard1" class="bg-slate-900 p-3 rounded-xl border border-slate-700 flex justify-between items-center">
-          <div>
-            <p class="text-xs font-bold text-blue-400">LEVEL 1 (Starter - ₹100)</p>
-            <p class="text-[10px] text-slate-400">15% Commission Direct Referrals</p>
-          </div>
-          <span id="badge1" class="text-[10px] bg-slate-800 text-slate-400 px-2 py-1 rounded font-bold">🔒 LOCKED</span>
-        </div>
-
-        <!-- LEVEL 2 -->
-        <div id="levelCard2" class="bg-slate-900 p-3 rounded-xl border border-slate-700 flex justify-between items-center">
-          <div>
-            <p class="text-xs font-bold text-blue-400">LEVEL 2 (Basic - ₹200)</p>
-            <p class="text-[10px] text-slate-400">20% Commission Team Income</p>
-          </div>
-          <span id="badge2" class="text-[10px] bg-slate-800 text-slate-400 px-2 py-1 rounded font-bold">🔒 LOCKED</span>
-        </div>
-
-        <!-- LEVEL 3 -->
-        <div id="levelCard3" class="bg-slate-900 p-3 rounded-xl border border-slate-700 flex justify-between items-center">
-          <div>
-            <p class="text-xs font-bold text-blue-400">LEVEL 3 (Pro - ₹500)</p>
-            <p class="text-[10px] text-slate-400">25% Commission Expansion</p>
-          </div>
-          <span id="badge3" class="text-[10px] bg-slate-800 text-slate-400 px-2 py-1 rounded font-bold">🔒 LOCKED</span>
-        </div>
-
-        <!-- LEVEL 4 -->
-        <div id="levelCard4" class="bg-slate-900 p-3 rounded-xl border border-slate-700 flex justify-between items-center">
-          <div>
-            <p class="text-xs font-bold text-blue-400">LEVEL 4 (Advanced - ₹1000)</p>
-            <p class="text-[10px] text-slate-400">30% Commission Growth</p>
-          </div>
-          <span id="badge4" class="text-[10px] bg-slate-800 text-slate-400 px-2 py-1 rounded font-bold">🔒 LOCKED</span>
-        </div>
-
-        <!-- LEVEL 5 -->
-        <div id="levelCard5" class="bg-slate-900 p-3 rounded-xl border border-slate-700 flex justify-between items-center">
-          <div>
-            <p class="text-xs font-bold text-purple-400">LEVEL 5 (VIP - ₹2000)</p>
-            <p class="text-[10px] text-slate-400">35% Ultimate Commission</p>
-          </div>
-          <span id="badge5" class="text-[10px] bg-slate-800 text-slate-400 px-2 py-1 rounded font-bold">🔒 LOCKED</span>
-        </div>
-      </div>
     </div>
 
   </div>
 
   <script>
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbzR4maAn7cJ2NqnOjgMTa-NttkUrgc1nUxnQCOSJxMN0SQKH7pxDGbcKHp2_k0K1O2gpg/exec';
+    // ✅ APNA NAYA GOOGLE APPS SCRIPT WEB APP URL
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbx0GJ8HVQGfOyMLwDs9bIqKFsr2yUkieMwfT2qH9d_I3m93WbaKMBmW6KO_WpL-jqa7Ig/exec';
 
-    function updateQrCode() {
-      const selectedSelect = document.getElementById('planSelect');
-      const amount = selectedSelect.value;
-      const upiId = "6397969337@ptyes";
-      document.getElementById('qrAmountText').innerText = "₹" + amount;
-      document.getElementById('displayAmount').innerText = "₹" + amount;
-      document.getElementById('paymentQr').src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=upi://pay?pa=${upiId}&pn=PS_Network&am=${amount}&cu=INR`;
+    // Base Data Structure
+    let userData = {
+      activeLevel: 100,
+      levels: [
+        { level: 1, price: 100, paid: true, members: 0, commRate: 15 },
+        { level: 2, price: 200, paid: false, members: 0, commRate: 40 },
+        { level: 3, price: 500, paid: false, members: 0, commRate: 125 },
+        { level: 4, price: 1000, paid: false, members: 0, commRate: 300 },
+        { level: 5, price: 2000, paid: false, members: 0, commRate: 700 }
+      ]
+    };
+
+    // 1. Fetch Live Data from Google Sheet
+    function loadDashboardData() {
+      fetch(scriptURL + "?action=getDashboard")
+        .then(res => res.json())
+        .then(data => {
+          if (data) {
+            const c100 = parseInt(data.count100 || 0);
+            const c200 = parseInt(data.count200 || 0);
+            const c500 = parseInt(data.count500 || 0);
+            const c1000 = parseInt(data.count1000 || 0);
+            const c2000 = parseInt(data.count2000 || 0);
+            const activeLvl = parseInt(data.levelActive || 100);
+
+            userData.activeLevel = activeLvl;
+
+            // Members
+            userData.levels[0].members = c100;
+            userData.levels[1].members = c200;
+            userData.levels[2].members = c500;
+            userData.levels[3].members = c1000;
+            userData.levels[4].members = c2000;
+
+            // Status (Lock/Unlock)
+            userData.levels[0].paid = true;
+            userData.levels[1].paid = activeLvl >= 200;
+            userData.levels[2].paid = activeLvl >= 500;
+            userData.levels[3].paid = activeLvl >= 1000;
+            userData.levels[4].paid = activeLvl >= 2000;
+          }
+          renderLevelsUI();
+        })
+        .catch(err => {
+          console.log("Sheet Error: ", err);
+          renderLevelsUI();
+        });
     }
 
-    function showForm(type) {
-      const loginForm = document.getElementById('loginForm');
-      const joinForm = document.getElementById('joinForm');
-      const loginBtn = document.getElementById('loginTabBtn');
-      const joinBtn = document.getElementById('joinTabBtn');
+    // 2. Render UI
+    function renderLevelsUI() {
+      document.getElementById('loadingText').classList.add('hidden');
+      const container = document.getElementById('levelsContainer');
+      container.classList.remove('hidden');
+      container.innerHTML = '';
 
-      if(type === 'login') {
-        loginForm.classList.remove('hidden');
-        joinForm.classList.add('hidden');
-        loginBtn.classList.add('active');
-        joinBtn.classList.remove('active');
-      } else {
-        joinForm.classList.remove('hidden');
-        loginForm.classList.add('hidden');
-        joinBtn.classList.add('active');
-        loginBtn.classList.remove('active');
-      }
-    }
+      userData.levels.forEach(item => {
+        const totalEarning = item.members * item.commRate;
+        const bonusTarget = 3;
+        const isBonusEarned = item.members >= bonusTarget;
+        const bonusAmount = item.price * 0.10; // 10% Extra Bonus
 
-    function handleAuth(e, type) {
-      e.preventDefault();
-      
-      if(type === 'login') {
-        const mobile = document.getElementById('loginMobile').value;
-        const level = document.getElementById('loginLevel').value;
-        
-        openDashboard(mobile, level);
-      } else {
-        const submitBtn = document.getElementById('submitBtn');
-        submitBtn.innerText = "डेटा सबमिट हो रहा है...";
-        submitBtn.disabled = true;
+        const card = document.createElement('div');
+        card.className = `bg-slate-900/90 p-4 rounded-xl border transition-all ${item.paid ? 'border-emerald-500 cursor-pointer hover:border-emerald-400' : 'border-slate-800 locked-level'}`;
 
-        const joinForm = document.getElementById('joinForm');
-        
-        fetch(scriptURL, { method: 'POST', body: new FormData(joinForm)})
-          .then(response => {
-            alert("रजिस्ट्रेशन सफल रहा! आपकी जानकारी रिकॉर्ड में दर्ज हो गई है।");
-            submitBtn.innerText = "सबमिट करें और ID एक्टिव करें";
-            submitBtn.disabled = false;
-            joinForm.reset();
-            updateQrCode();
-          })
-          .catch(error => {
-            alert("डेटा भेजने में समस्या आई, कृपया पुनः प्रयास करें।");
-            submitBtn.innerText = "सबमिट करें और ID एक्टिव करें";
-            submitBtn.disabled = false;
-          });
-      }
-    }
-
-    function openDashboard(mobile, userLevel) {
-      document.getElementById('authSection').classList.add('hidden');
-      document.getElementById('userDashboard').classList.remove('hidden');
-      document.getElementById('dashUserInfo').innerText = "Mobile: " + mobile + " | Active Level: " + userLevel;
-
-      // Reset All Levels to Locked
-      for(let i = 1; i <= 5; i++) {
-        const card = document.getElementById('levelCard' + i);
-        const badge = document.getElementById('badge' + i);
-        
-        if(i == userLevel) {
-          // UNLOCK ONLY THE USER'S SPECIFIC LEVEL
-          card.classList.remove('locked-level');
-          card.classList.add('border-emerald-500', 'bg-emerald-950/30');
-          badge.innerText = "🔓 UNLOCKED (ACTIVE)";
-          badge.className = "text-[10px] bg-emerald-500 text-slate-950 px-2 py-1 rounded font-bold";
-        } else {
-          // LOCK OTHER LEVELS
-          card.classList.add('locked-level');
-          badge.innerText = "🔒 LOCKED";
-          badge.className = "text-[10px] bg-slate-800 text-slate-400 px-2 py-1 rounded font-bold";
+        let bonusBoxHTML = '';
+        if (item.paid) {
+          if (isBonusEarned) {
+            bonusBoxHTML = `
+              <div class="mt-3 p-2 bg-emerald-950/80 border border-emerald-500/50 rounded-lg text-[11px] text-emerald-300 font-bold">
+                🎉 3 Referrals Bonus Unlocked: +₹${bonusAmount} Extra!
+              </div>`;
+          } else {
+            const need = bonusTarget - item.members;
+            bonusBoxHTML = `
+              <div class="mt-3 p-2 bg-amber-950/40 border border-amber-500/30 rounded-lg text-[11px] text-amber-400 font-medium">
+                🎯 Bonus Status: ${item.members}/3 Joined (${need} or chahiye)
+              </div>`;
+          }
         }
-      }
+
+        card.innerHTML = `
+          <div class="flex justify-between items-center">
+            <div>
+              <p class="text-sm font-bold text-white">LEVEL ${item.level} (₹${item.price})</p>
+            </div>
+            <span class="text-[10px] font-bold px-2.5 py-1 rounded-full ${item.paid ? 'bg-emerald-500 text-slate-950' : 'bg-slate-800 text-slate-400'}">
+              ${item.paid ? '🔓 UNLOCKED' : '🔒 LOCKED'}
+            </span>
+          </div>
+
+          ${item.paid ? `
+            <div id="details-${item.level}" class="hidden mt-3 pt-3 border-t border-slate-800 space-y-1.5 text-xs">
+              <div class="flex justify-between text-slate-300">
+                <span>👥 Total Members:</span>
+                <span class="font-bold text-blue-400">${item.members} Members</span>
+              </div>
+              <div class="flex justify-between text-slate-300">
+                <span>💰 Total Level Income:</span>
+                <span class="font-bold text-emerald-400">₹${totalEarning}</span>
+              </div>
+              ${bonusBoxHTML}
+            </div>
+          ` : `
+            <button onclick="payToUnlock(${item.level},${item.price})" class="w-full mt-3 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold py-2 rounded-lg transition-all">
+              Level ${item.level} Unlock Karein (Pay ₹${item.price})
+            </button>
+          `}
+        `;
+
+        if (item.paid) {
+          card.addEventListener('click', (e) => {
+            if(e.target.tagName === 'BUTTON') return;
+            const detailDiv = document.getElementById(`details-${item.level}`);
+            detailDiv.classList.toggle('hidden');
+          });
+        }
+
+        container.appendChild(card);
+      });
     }
 
-    function logout() {
-      document.getElementById('userDashboard').classList.add('hidden');
-      document.getElementById('authSection').classList.remove('hidden');
+    function payToUnlock(lvl, price) {
+      alert(`Level ${lvl} (₹${price}) unlock karne ke liye payment portal khulega.`);
     }
+
+    window.onload = loadDashboardData;
   </script>
 </body>
 </html>
