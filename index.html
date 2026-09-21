@@ -44,34 +44,34 @@
         <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 font-bold p-3 rounded-xl text-sm transition-all shadow-lg">डैशबोर्ड खोलें</button>
       </form>
 
-      <!-- JOIN FORM -->
-      <form id="joinForm" onsubmit="handleAuth(event, 'join')" class="space-y-4 hidden">
+      <!-- JOIN FORM (CONNECTED TO GOOGLE SHEET) -->
+      <form id="joinForm" name="google-sheet" onsubmit="handleAuth(event, 'join')" class="space-y-4 hidden">
         <h2 class="text-center text-sm font-bold text-amber-400 uppercase">नया रजिस्ट्रेशन करें</h2>
         
         <div>
           <label class="text-[11px] text-slate-400 font-bold block mb-1">पूरा नाम</label>
-          <input type="text" placeholder="अपना नाम लिखें" required class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-sm focus:outline-none focus:border-blue-500 text-white">
+          <input type="text" name="Name" placeholder="अपना नाम लिखें" required class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-sm focus:outline-none focus:border-blue-500 text-white">
         </div>
 
         <div>
           <label class="text-[11px] text-slate-400 font-bold block mb-1">मोबाइल नंबर</label>
-          <input type="tel" placeholder="मोबाइल नंबर लिखें" required class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-sm focus:outline-none focus:border-blue-500 text-white">
+          <input type="tel" name="Mobile" placeholder="मोबाइल नंबर लिखें" required class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-sm focus:outline-none focus:border-blue-500 text-white">
         </div>
 
         <div>
           <label class="text-[11px] text-amber-400 font-bold block mb-1">अपना पैकेज चुनें (Plan Amount)</label>
-          <select id="planSelect" onchange="updateQrCode()" class="w-full bg-slate-900 border border-amber-500/50 rounded-xl p-3 text-sm focus:outline-none focus:border-amber-500 text-amber-300 font-bold">
-            <option value="100">Starter Plan - ₹100</option>
-            <option value="200">Basic Plan - ₹200</option>
-            <option value="500">Pro Plan - ₹500</option>
-            <option value="1000">Advanced Plan - ₹1000</option>
-            <option value="2000">VIP Plan - ₹2000</option>
+          <select id="planSelect" name="Package" onchange="updateQrCode()" class="w-full bg-slate-900 border border-amber-500/50 rounded-xl p-3 text-sm focus:outline-none focus:border-amber-500 text-amber-300 font-bold">
+            <option value="Starter Plan - ₹100">Starter Plan - ₹100</option>
+            <option value="Basic Plan - ₹200">Basic Plan - ₹200</option>
+            <option value="Pro Plan - ₹500">Pro Plan - ₹500</option>
+            <option value="Advanced Plan - ₹1000">Advanced Plan - ₹1000</option>
+            <option value="VIP Plan - ₹2000">VIP Plan - ₹2000</option>
           </select>
         </div>
 
         <div>
           <label class="text-[11px] text-slate-400 font-bold block mb-1">रेफरल आईडी (ऐच्छिक)</label>
-          <input type="text" placeholder="PSN-XXXXX" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-sm focus:outline-none focus:border-blue-500 text-white">
+          <input type="text" name="Referral_ID" placeholder="PSN-XXXXX" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-sm focus:outline-none focus:border-blue-500 text-white">
         </div>
 
         <div class="bg-slate-900 p-4 rounded-xl border border-amber-500/50 text-center">
@@ -87,10 +87,10 @@
 
         <div>
           <label class="text-[11px] text-slate-400 font-bold block mb-1">पेमेंट UTR / Transaction ID</label>
-          <input type="text" placeholder="12 अंकों का UTR नंबर दर्ज करें" required class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-sm focus:outline-none focus:border-blue-500 text-white">
+          <input type="text" name="Payment_UTR" placeholder="12 अंकों का UTR नंबर दर्ज करें" required class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-sm focus:outline-none focus:border-blue-500 text-white">
         </div>
 
-        <button type="submit" class="w-full bg-amber-500 hover:bg-amber-600 font-bold text-slate-950 p-3 rounded-xl text-sm transition-all shadow-lg">सबमिट करें और ID एक्टिव करें</button>
+        <button type="submit" id="submitBtn" class="w-full bg-amber-500 hover:bg-amber-600 font-bold text-slate-950 p-3 rounded-xl text-sm transition-all shadow-lg">सबमिट करें और ID एक्टिव करें</button>
       </form>
 
     </div>
@@ -239,12 +239,23 @@
   </div>
 
   <script>
+    // ✅ YOUR GOOGLE APPS SCRIPT WEB APP URL HAS BEEN CONNECTED HERE
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbw5GBKYfO7TDRaLOLz4kgZVRQr5QMtfT3eYwIYKUOsySILLnPe4layxCFpM5h2symq_jA/exec';
+
     function updateQrCode() {
-      const selectedAmount = document.getElementById('planSelect').value;
+      const selectedSelect = document.getElementById('planSelect');
+      const selectedValue = selectedSelect.value;
+      let amount = "100";
+
+      if(selectedValue.includes("200")) amount = "200";
+      else if(selectedValue.includes("500")) amount = "500";
+      else if(selectedValue.includes("1000")) amount = "1000";
+      else if(selectedValue.includes("2000")) amount = "2000";
+
       const upiId = "6397969337@ptyes";
-      document.getElementById('qrAmountText').innerText = "₹" + selectedAmount;
-      document.getElementById('displayAmount').innerText = "₹" + selectedAmount;
-      const newQrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=upi://pay?pa=${upiId}&pn=PS_Network&am=${selectedAmount}&cu=INR`;
+      document.getElementById('qrAmountText').innerText = "₹" + amount;
+      document.getElementById('displayAmount').innerText = "₹" + amount;
+      const newQrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=upi://pay?pa=${upiId}&pn=PS_Network&am=${amount}&cu=INR`;
       document.getElementById('paymentQr').src = newQrUrl;
     }
 
@@ -269,7 +280,30 @@
 
     function handleAuth(e, type) {
       e.preventDefault();
-      alert(type === 'login' ? "लॉगिन सफल हुआ!" : "रजिस्ट्रेशन सबमिट हो गया है!");
+      
+      if(type === 'login') {
+        alert("लॉगिन सफल हुआ!");
+      } else {
+        const submitBtn = document.getElementById('submitBtn');
+        submitBtn.innerText = "डेटा सबमिट हो रहा है...";
+        submitBtn.disabled = true;
+
+        const joinForm = document.getElementById('joinForm');
+        
+        fetch(scriptURL, { method: 'POST', body: new FormData(joinForm)})
+          .then(response => {
+            alert("रजिस्ट्रेशन सफल रहा! आपकी जानकारी गूगल शीट में सेव हो गई है।");
+            submitBtn.innerText = "सबमिट करें और ID एक्टिव करें";
+            submitBtn.disabled = false;
+            joinForm.reset();
+            updateQrCode();
+          })
+          .catch(error => {
+            alert("डेटा भेजने में समस्या आई, कृपया UTR और डिटेल दोबारा चेक करें।");
+            submitBtn.innerText = "सबमिट करें और ID एक्टिव करें";
+            submitBtn.disabled = false;
+          });
+      }
     }
 
     function downloadCard(elementId, fileName) {
