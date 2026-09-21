@@ -13,30 +13,71 @@
 </head>
 <body class="p-4 flex flex-col items-center min-h-screen">
 
-  <div class="max-w-md w-full space-y-6 my-4">
+  <div class="max-w-md w-full space-y-5 my-4">
 
     <!-- Header Title -->
     <div class="text-center mb-2">
       <h1 class="text-3xl font-black italic text-blue-500 uppercase tracking-wider">P.S NETWORK</h1>
-      <p class="text-xs text-slate-400 uppercase tracking-widest">सदस्य डैशबोर्ड एवं रजिस्ट्रेशन</p>
+      <p class="text-xs text-slate-400 uppercase tracking-widest">सदस्य डैशबोर्ड एवं पोर्टल</p>
     </div>
 
-    <!-- REGISTRATION FORM SECTION -->
-    <div class="glass p-5 rounded-[1.5rem] border border-slate-700 shadow-xl space-y-3">
-      <h2 class="text-sm font-bold text-blue-400 uppercase tracking-wider text-center">📝 New Member Registration</h2>
-      <form id="regForm" onsubmit="submitForm(event)" class="space-y-2.5 text-xs">
+    <!-- LOGGED-IN USER PROFILE BAR -->
+    <div id="userProfileBar" class="hidden glass p-4 rounded-2xl border border-emerald-500/40 flex justify-between items-center">
+      <div>
+        <p id="profileName" class="text-sm font-bold text-emerald-400">👤 User</p>
+        <p id="profileMobile" class="text-xs text-slate-400">📱 Mobile</p>
+      </div>
+      <button onclick="logoutUser()" class="bg-red-600/80 hover:bg-red-600 text-white text-xs font-bold px-3 py-1.5 rounded-lg transition-all">
+        Log Out 🚪
+      </button>
+    </div>
+
+    <!-- AUTH CONTAINER (Login & Register) -->
+    <div id="authContainer" class="glass p-5 rounded-[1.5rem] border border-slate-700 shadow-xl space-y-4">
+      
+      <!-- Tab Selection -->
+      <div class="flex border-b border-slate-700 pb-2">
+        <button id="tabLoginBtn" onclick="switchTab('login')" class="flex-1 text-center pb-2 text-sm font-bold border-b-2 border-blue-500 text-blue-400">
+          🔑 Login
+        </button>
+        <button id="tabRegBtn" onclick="switchTab('register')" class="flex-1 text-center pb-2 text-sm font-bold border-b-2 border-transparent text-slate-400 hover:text-white">
+          📝 Register
+        </button>
+      </div>
+
+      <!-- 1. LOGIN FORM -->
+      <form id="loginForm" onsubmit="handleLogin(event)" class="space-y-3 text-xs">
+        <div>
+          <label class="block text-slate-400 mb-1">मोबाइल नंबर (Mobile No)</label>
+          <input type="tel" id="loginMobile" required class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-white focus:outline-none focus:border-blue-500" placeholder="Enter Registered Mobile Number">
+        </div>
+        <div>
+          <label class="block text-slate-400 mb-1">पासवर्ड (Password)</label>
+          <input type="password" id="loginPassword" required class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-white focus:outline-none focus:border-blue-500" placeholder="Enter Password">
+        </div>
+        <button type="submit" class="w-full bg-blue-600 hover:bg-blue-500 font-bold py-2.5 rounded-lg text-white transition-all">
+          Login To Account
+        </button>
+      </form>
+
+      <!-- 2. REGISTER FORM -->
+      <form id="regForm" onsubmit="handleRegister(event)" class="space-y-2.5 text-xs hidden">
         <div>
           <label class="block text-slate-400 mb-1">नाम (Full Name)</label>
-          <input type="text" id="name" required class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-white focus:outline-none focus:border-blue-500" placeholder="Enter Name">
+          <input type="text" id="regName" required class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-white focus:outline-none focus:border-blue-500" placeholder="Enter Name">
         </div>
         <div>
           <label class="block text-slate-400 mb-1">मोबाइल नंबर (Mobile No)</label>
-          <input type="tel" id="mobile" required class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-white focus:outline-none focus:border-blue-500" placeholder="Enter Mobile Number">
+          <input type="tel" id="regMobile" required class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-white focus:outline-none focus:border-blue-500" placeholder="Enter Mobile Number">
+        </div>
+        <div>
+          <label class="block text-slate-400 mb-1">पासवर्ड बनाएं (Create Password)</label>
+          <input type="password" id="regPassword" required class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-white focus:outline-none focus:border-blue-500" placeholder="Set Your Password">
         </div>
         <div class="grid grid-cols-2 gap-2">
           <div>
             <label class="block text-slate-400 mb-1">Package (Level)</label>
-            <select id="package" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-white focus:outline-none focus:border-blue-500">
+            <select id="regPackage" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-white focus:outline-none focus:border-blue-500">
               <option value="100">Level 1 - ₹100</option>
               <option value="200">Level 2 - ₹200</option>
               <option value="500">Level 3 - ₹500</option>
@@ -46,17 +87,18 @@
           </div>
           <div>
             <label class="block text-slate-400 mb-1">Referral ID</label>
-            <input type="text" id="refId" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-white focus:outline-none focus:border-blue-500" placeholder="Optional">
+            <input type="text" id="regRefId" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-white focus:outline-none focus:border-blue-500" placeholder="Optional">
           </div>
         </div>
         <div>
           <label class="block text-slate-400 mb-1">Payment UTR / Ref No.</label>
-          <input type="text" id="utr" required class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-white focus:outline-none focus:border-blue-500" placeholder="Enter UTR Number">
+          <input type="text" id="regUtr" required class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-white focus:outline-none focus:border-blue-500" placeholder="Enter UTR Number">
         </div>
         <button type="submit" id="subBtn" class="w-full bg-gradient-to-r from-blue-600 to-emerald-600 hover:from-blue-500 hover:to-emerald-500 font-bold py-2.5 rounded-lg text-white shadow-lg transition-all mt-1">
-          Submit & Join Now
+          Register & Join Now
         </button>
       </form>
+
     </div>
 
     <!-- DASHBOARD LEVELS CONTAINER -->
@@ -67,9 +109,8 @@
         ⏳ गूगल शीट से डेटा लोड हो रहा है...
       </div>
 
-      <!-- LEVELS WRAPPER -->
       <div id="levelsContainer" class="space-y-3 hidden">
-        <!-- JavaScript Dynamic Load -->
+        <!-- Dynamic Load -->
       </div>
     </div>
 
@@ -89,7 +130,96 @@
       ]
     };
 
-    // 1. Live Data Read
+    function switchTab(tab) {
+      const loginForm = document.getElementById('loginForm');
+      const regForm = document.getElementById('regForm');
+      const tabLoginBtn = document.getElementById('tabLoginBtn');
+      const tabRegBtn = document.getElementById('tabRegBtn');
+
+      if (tab === 'login') {
+        loginForm.classList.remove('hidden');
+        regForm.classList.add('hidden');
+        tabLoginBtn.className = "flex-1 text-center pb-2 text-sm font-bold border-b-2 border-blue-500 text-blue-400";
+        tabRegBtn.className = "flex-1 text-center pb-2 text-sm font-bold border-b-2 border-transparent text-slate-400 hover:text-white";
+      } else {
+        loginForm.classList.add('hidden');
+        regForm.classList.remove('hidden');
+        tabRegBtn.className = "flex-1 text-center pb-2 text-sm font-bold border-b-2 border-blue-500 text-blue-400";
+        tabLoginBtn.className = "flex-1 text-center pb-2 text-sm font-bold border-b-2 border-transparent text-slate-400 hover:text-white";
+      }
+    }
+
+    function checkLoginSession() {
+      const savedUser = localStorage.getItem('ps_network_user');
+      if (savedUser) {
+        const user = JSON.parse(savedUser);
+        document.getElementById('authContainer').classList.add('hidden');
+        document.getElementById('userProfileBar').classList.remove('hidden');
+        document.getElementById('profileName').innerText = "👤 " + (user.name || "Member");
+        document.getElementById('profileMobile').innerText = "📱 " + user.mobile;
+      } else {
+        document.getElementById('authContainer').classList.remove('hidden');
+        document.getElementById('userProfileBar').classList.add('hidden');
+      }
+    }
+
+    function handleLogin(e) {
+      e.preventDefault();
+      const mobile = document.getElementById('loginMobile').value;
+      const pwd = document.getElementById('loginPassword').value;
+
+      const userObj = { name: "Member (" + mobile + ")", mobile: mobile };
+      localStorage.setItem('ps_network_user', JSON.stringify(userObj));
+
+      alert('✅ Successfully Logged In!');
+      checkLoginSession();
+    }
+
+    function handleRegister(e) {
+      e.preventDefault();
+      const subBtn = document.getElementById('subBtn');
+      subBtn.innerText = 'Submitting...';
+      subBtn.disabled = true;
+
+      const name = document.getElementById('regName').value;
+      const mobile = document.getElementById('regMobile').value;
+      const pwd = document.getElementById('regPassword').value;
+
+      const formData = new FormData();
+      formData.append('Name', name);
+      formData.append('Mobile', mobile);
+      formData.append('Password', pwd);
+      formData.append('Package', document.getElementById('regPackage').value);
+      formData.append('Referral_ID', document.getElementById('regRefId').value);
+      formData.append('Payment_UTR', document.getElementById('regUtr').value);
+
+      fetch(scriptURL, { method: 'POST', body: formData })
+        .then(res => res.text())
+        .then(response => {
+          alert('✅ Registration Successful!');
+          const userObj = { name: name, mobile: mobile };
+          localStorage.setItem('ps_network_user', JSON.stringify(userObj));
+
+          document.getElementById('regForm').reset();
+          subBtn.innerText = 'Register & Join Now';
+          subBtn.disabled = false;
+
+          checkLoginSession();
+          loadDashboardData();
+        })
+        .catch(err => {
+          alert('❌ Registration Failed!');
+          subBtn.innerText = 'Register & Join Now';
+          subBtn.disabled = false;
+        });
+    }
+
+    function logoutUser() {
+      localStorage.removeItem('ps_network_user');
+      alert('🔒 Logged Out!');
+      checkLoginSession();
+    }
+
     function loadDashboardData() {
       fetch(scriptURL + "?action=getDashboard")
         .then(res => res.json())
@@ -119,12 +249,10 @@
           renderLevelsUI();
         })
         .catch(err => {
-          console.log("Sheet Error: ", err);
           renderLevelsUI();
         });
     }
 
-    // 2. Render UI (Inside Card Details)
     function renderLevelsUI() {
       document.getElementById('loadingText').classList.add('hidden');
       const container = document.getElementById('levelsContainer');
@@ -156,7 +284,6 @@
           }
         }
 
-        // Inside-Card View Logic
         card.innerHTML = `
           <div class="flex justify-between items-center">
             <p class="text-sm font-bold text-white uppercase">LEVEL ${item.level} (₹${item.price})</p>
@@ -165,7 +292,6 @@
             </span>
           </div>
 
-          <!-- Card Ke Andar Khulne Waali Details -->
           ${item.paid ? `
             <div id="details-${item.level}" class="hidden mt-3 pt-3 border-t border-slate-800/80 space-y-2 text-xs">
               <div class="flex justify-between items-center bg-slate-800/60 p-2 rounded-lg">
@@ -196,37 +322,10 @@
       });
     }
 
-    // 3. Submit Form Data
-    function submitForm(e) {
-      e.preventDefault();
-      const subBtn = document.getElementById('subBtn');
-      subBtn.innerText = 'Submitting...';
-      subBtn.disabled = true;
-
-      const formData = new FormData();
-      formData.append('Name', document.getElementById('name').value);
-      formData.append('Mobile', document.getElementById('mobile').value);
-      formData.append('Package', document.getElementById('package').value);
-      formData.append('Referral_ID', document.getElementById('refId').value);
-      formData.append('Payment_UTR', document.getElementById('utr').value);
-
-      fetch(scriptURL, { method: 'POST', body: formData })
-        .then(res => res.text())
-        .then(response => {
-          alert('✅ Request Submitted Successfully! Admin verification ke baad aapka level unlock ho jayega.');
-          document.getElementById('regForm').reset();
-          subBtn.innerText = 'Submit & Join Now';
-          subBtn.disabled = false;
-          loadDashboardData();
-        })
-        .catch(err => {
-          alert('❌ Error submitting form!');
-          subBtn.innerText = 'Submit & Join Now';
-          subBtn.disabled = false;
-        });
-    }
-
-    window.onload = loadDashboardData;
+    window.onload = function() {
+      checkLoginSession();
+      loadDashboardData();
+    };
   </script>
 </body>
 </html>
