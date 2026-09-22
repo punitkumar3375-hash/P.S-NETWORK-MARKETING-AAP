@@ -55,7 +55,7 @@
           <label class="block text-slate-400 mb-1">Password</label>
           <input type="password" id="loginPassword" required class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-white focus:outline-none focus:border-blue-500" placeholder="Enter Password">
         </div>
-        <button type="submit" class="w-full bg-blue-600 hover:bg-blue-500 font-bold py-2.5 rounded-lg text-white transition-all">
+        <button type="submit" id="loginBtn" class="w-full bg-blue-600 hover:bg-blue-500 font-bold py-2.5 rounded-lg text-white transition-all">
           Login To Account
         </button>
       </form>
@@ -117,13 +117,12 @@
   </div>
 
   <script>
-    // Updated Web App URL
     const scriptURL = 'https://script.google.com/macros/s/AKfycbzGUsdscQIU8E2c4__j4e1JHSUqCYkG1NqNLHLyBqeDZdo9xglaaxy3qGi_zsoWfn5Pbg/exec';
 
     let userData = {
-      activeLevel: 100,
+      activeLevel: 0,
       levels: [
-        { level: 1, price: 100, paid: true, members: 0, commRate: 55 },
+        { level: 1, price: 100, paid: false, members: 0, commRate: 55 },
         { level: 2, price: 200, paid: false, members: 0, commRate: 100 },
         { level: 3, price: 500, paid: false, members: 0, commRate: 225 },
         { level: 4, price: 1000, paid: false, members: 0, commRate: 400 },
@@ -166,16 +165,36 @@
       }
     }
 
+    // REAL LOGIN FUNCTION WITH GOOGLE SHEET VERIFICATION
     function handleLogin(e) {
       e.preventDefault();
+      const loginBtn = document.getElementById('loginBtn');
+      loginBtn.innerText = 'Verifying...';
+      loginBtn.disabled = true;
+
       const mobile = document.getElementById('loginMobile').value.trim();
-      const pwd = document.getElementById('loginPassword').value;
+      const pwd = document.getElementById('loginPassword').value.trim();
 
-      const userObj = { name: "Member (" + mobile + ")", mobile: mobile };
-      localStorage.setItem('ps_network_user', JSON.stringify(userObj));
+      fetch(`${scriptURL}?action=login&mobile=${encodeURIComponent(mobile)}&password=${encodeURIComponent(pwd)}`)
+        .then(res => res.json())
+        .then(data => {
+          loginBtn.innerText = 'Login To Account';
+          loginBtn.disabled = false;
 
-      alert('✅ Logged In Successfully!');
-      checkLoginSession();
+          if (data.status === 'success') {
+            const userObj = { name: data.name || "Member", mobile: data.mobile };
+            localStorage.setItem('ps_network_user', JSON.stringify(userObj));
+            alert('✅ Login Successful!');
+            checkLoginSession();
+          } else {
+            alert(data.message || '❌ Sahi Mobile Number ya Password daalein!');
+          }
+        })
+        .catch(err => {
+          loginBtn.innerText = 'Login To Account';
+          loginBtn.disabled = false;
+          alert('❌ Connection Error! Kripya dobara try karein.');
+        });
     }
 
     function handleRegister(e) {
@@ -206,7 +225,7 @@
         body: params.toString()
       })
       .then(() => {
-        alert('✅ Registration Saved to Google Sheet!');
+        alert('✅ Registration Successful! Admin approval ke baad aapka level unlock ho jayega.');
         const userObj = { name: name, mobile: mobile };
         localStorage.setItem('ps_network_user', JSON.stringify(userObj));
 
@@ -226,7 +245,8 @@
     function logoutUser() {
       localStorage.removeItem('ps_network_user');
       alert('🔒 Logged Out!');
-      userData.levels.forEach(l => l.members = 0);
+      userData.activeLevel = 0;
+      userData.levels.forEach(l => { l.paid = false; l.members = 0; });
       checkLoginSession();
     }
 
@@ -241,7 +261,7 @@
         .then(res => res.json())
         .then(data => {
           if (data) {
-            userData.activeLevel = parseInt(data.levelActive || 100);
+            userData.activeLevel = parseInt(data.levelActive || 0);
 
             userData.levels[0].members = parseInt(data.count100 || 0);
             userData.levels[1].members = parseInt(data.count200 || 0);
@@ -249,7 +269,7 @@
             userData.levels[3].members = parseInt(data.count1000 || 0);
             userData.levels[4].members = parseInt(data.count2000 || 0);
 
-            userData.levels[0].paid = true;
+            userData.levels[0].paid = userData.activeLevel >= 100;
             userData.levels[1].paid = userData.activeLevel >= 200;
             userData.levels[2].paid = userData.activeLevel >= 500;
             userData.levels[3].paid = userData.activeLevel >= 1000;
@@ -313,7 +333,7 @@
           <div class="flex justify-between items-center">
             <p class="text-sm font-bold text-white uppercase">LEVEL ${item.level} (₹${item.price})</p>
             <span class="text-[10px] font-bold px-2.5 py-1 rounded-full ${item.paid ? 'bg-emerald-500 text-slate-950' : 'bg-slate-800 text-slate-400'}">
-              ${item.paid ? '🔓 UNLOCKED' : '🔒 LOCKED'}
+              ${item.paid ? '🔓 UNLOCKED' : '🔒 LOCKED (Pending)'}
             </span>
           </div>
 
@@ -330,7 +350,7 @@
               ${bonusBoxHTML}${recycleBoxHTML}
             </div>
           ` : `
-            <button onclick="alert('Level ${item.level} unlock karne ke liye admin se sampark karein.')" class="w-full mt-3 bg-slate-800 text-slate-400 text-xs font-bold py-2 rounded-lg">
+            <button onclick="alert('Aapka account Pending hai ya ye Level Locked hai. Payment approval ke baad unlock ho jayega.')" class="w-full mt-3 bg-slate-800 text-slate-400 text-xs font-bold py-2 rounded-lg">
               Level ${item.level} Locked
             </button>
           `}
