@@ -18,7 +18,7 @@
     <!-- Header Title -->
     <div class="text-center mb-2">
       <h1 class="text-3xl font-black italic text-blue-500 uppercase tracking-wider">P.S NETWORK</h1>
-      <p class="text-xs text-slate-400 uppercase tracking-widest">सदस्य डैशबोर्ड एवं पोर्टल</p>
+      <p class="text-xs text-slate-400 uppercase tracking-widest">Sadasya Dashboard & Portal</p>
     </div>
 
     <!-- LOGGED-IN USER PROFILE BAR -->
@@ -48,11 +48,11 @@
       <!-- 1. LOGIN FORM -->
       <form id="loginForm" onsubmit="handleLogin(event)" class="space-y-3 text-xs">
         <div>
-          <label class="block text-slate-400 mb-1">मोबाइल नंबर (Mobile No)</label>
+          <label class="block text-slate-400 mb-1">Mobile Number</label>
           <input type="tel" id="loginMobile" required class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-white focus:outline-none focus:border-blue-500" placeholder="Enter Registered Mobile Number">
         </div>
         <div>
-          <label class="block text-slate-400 mb-1">पासवर्ड (Password)</label>
+          <label class="block text-slate-400 mb-1">Password</label>
           <input type="password" id="loginPassword" required class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-white focus:outline-none focus:border-blue-500" placeholder="Enter Password">
         </div>
         <button type="submit" class="w-full bg-blue-600 hover:bg-blue-500 font-bold py-2.5 rounded-lg text-white transition-all">
@@ -63,15 +63,15 @@
       <!-- 2. REGISTER FORM -->
       <form id="regForm" onsubmit="handleRegister(event)" class="space-y-2.5 text-xs hidden">
         <div>
-          <label class="block text-slate-400 mb-1">नाम (Full Name)</label>
+          <label class="block text-slate-400 mb-1">Full Name</label>
           <input type="text" id="regName" required class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-white focus:outline-none focus:border-blue-500" placeholder="Enter Name">
         </div>
         <div>
-          <label class="block text-slate-400 mb-1">मोबाइल नंबर (Mobile No)</label>
+          <label class="block text-slate-400 mb-1">Mobile Number</label>
           <input type="tel" id="regMobile" required class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-white focus:outline-none focus:border-blue-500" placeholder="Enter Mobile Number">
         </div>
         <div>
-          <label class="block text-slate-400 mb-1">पासवर्ड बनाएं (Create Password)</label>
+          <label class="block text-slate-400 mb-1">Create Password</label>
           <input type="password" id="regPassword" required class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-white focus:outline-none focus:border-blue-500" placeholder="Set Your Password">
         </div>
         <div class="grid grid-cols-2 gap-2">
@@ -106,7 +106,7 @@
       <h2 class="text-sm font-bold text-center text-slate-300 uppercase tracking-wider">📊 Your Level Progress</h2>
       
       <div id="loadingText" class="text-center text-amber-400 font-bold text-sm py-4 animate-pulse">
-        ⏳ डेटा लोड हो रहा है...
+        ⏳ Loading Data...
       </div>
 
       <div id="levelsContainer" class="space-y-3 hidden">
@@ -117,8 +117,8 @@
   </div>
 
   <script>
-    // यहाँ अपनी Google Apps Script की New Deployment URL डालें
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbx0GJ8HVQGfOyMLwDs9bIqKFsr2yUkieMwfT2qH9d_I3m93WbaKMBmW6KO_WpL-jqa7Ig/exec';
+    // Updated Web App URL
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbzGUsdscQIU8E2c4__j4e1JHSUqCYkG1NqNLHLyBqeDZdo9xglaaxy3qGi_zsoWfn5Pbg/exec';
 
     let userData = {
       activeLevel: 100,
@@ -226,7 +226,6 @@
     function logoutUser() {
       localStorage.removeItem('ps_network_user');
       alert('🔒 Logged Out!');
-      // Reset level members display
       userData.levels.forEach(l => l.members = 0);
       checkLoginSession();
     }
