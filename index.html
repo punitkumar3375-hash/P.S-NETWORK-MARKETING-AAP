@@ -106,7 +106,7 @@
       <h2 class="text-sm font-bold text-center text-slate-300 uppercase tracking-wider">📊 Your Level Progress</h2>
       
       <div id="loadingText" class="text-center text-amber-400 font-bold text-sm py-4 animate-pulse">
-        ⏳ गूगल शीट से डेटा लोड हो रहा है...
+        ⏳ डेटा लोड हो रहा है...
       </div>
 
       <div id="levelsContainer" class="space-y-3 hidden">
@@ -117,9 +117,9 @@
   </div>
 
   <script>
+    // यहाँ अपनी Google Apps Script की New Deployment URL डालें
     const scriptURL = 'https://script.google.com/macros/s/AKfycbx0GJ8HVQGfOyMLwDs9bIqKFsr2yUkieMwfT2qH9d_I3m93WbaKMBmW6KO_WpL-jqa7Ig/exec';
 
-    // Levels Data Setup
     let userData = {
       activeLevel: 100,
       levels: [
@@ -158,94 +158,103 @@
         document.getElementById('userProfileBar').classList.remove('hidden');
         document.getElementById('profileName').innerText = "👤 " + (user.name || "Member");
         document.getElementById('profileMobile').innerText = "📱 " + user.mobile;
+        loadDashboardData();
       } else {
         document.getElementById('authContainer').classList.remove('hidden');
         document.getElementById('userProfileBar').classList.add('hidden');
+        renderLevelsUI();
       }
     }
 
     function handleLogin(e) {
       e.preventDefault();
-      const mobile = document.getElementById('loginMobile').value;
+      const mobile = document.getElementById('loginMobile').value.trim();
       const pwd = document.getElementById('loginPassword').value;
 
       const userObj = { name: "Member (" + mobile + ")", mobile: mobile };
       localStorage.setItem('ps_network_user', JSON.stringify(userObj));
 
-      alert('✅ Successfully Logged In!');
+      alert('✅ Logged In Successfully!');
       checkLoginSession();
     }
 
     function handleRegister(e) {
       e.preventDefault();
       const subBtn = document.getElementById('subBtn');
-      subBtn.innerText = 'Submitting...';
+      subBtn.innerText = 'Saving to Sheet...';
       subBtn.disabled = true;
 
-      const name = document.getElementById('regName').value;
-      const mobile = document.getElementById('regMobile').value;
+      const name = document.getElementById('regName').value.trim();
+      const mobile = document.getElementById('regMobile').value.trim();
       const pwd = document.getElementById('regPassword').value;
+      const pkg = document.getElementById('regPackage').value;
+      const refId = document.getElementById('regRefId').value.trim();
+      const utr = document.getElementById('regUtr').value.trim();
 
-      const formData = new FormData();
-      formData.append('Name', name);
-      formData.append('Mobile', mobile);
-      formData.append('Password', pwd);
-      formData.append('Package', document.getElementById('regPackage').value);
-      formData.append('Referral_ID', document.getElementById('regRefId').value);
-      formData.append('Payment_UTR', document.getElementById('regUtr').value);
+      const params = new URLSearchParams();
+      params.append('Name', name);
+      params.append('Mobile', mobile);
+      params.append('Password', pwd);
+      params.append('Package', pkg);
+      params.append('Referral_ID', refId);
+      params.append('Payment_UTR', utr);
 
-      fetch(scriptURL, { method: 'POST', body: formData })
-        .then(res => res.text())
-        .then(response => {
-          alert('✅ Registration Successful!');
-          const userObj = { name: name, mobile: mobile };
-          localStorage.setItem('ps_network_user', JSON.stringify(userObj));
+      fetch(scriptURL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: params.toString()
+      })
+      .then(() => {
+        alert('✅ Registration Saved to Google Sheet!');
+        const userObj = { name: name, mobile: mobile };
+        localStorage.setItem('ps_network_user', JSON.stringify(userObj));
 
-          document.getElementById('regForm').reset();
-          subBtn.innerText = 'Register & Join Now';
-          subBtn.disabled = false;
+        document.getElementById('regForm').reset();
+        subBtn.innerText = 'Register & Join Now';
+        subBtn.disabled = false;
 
-          checkLoginSession();
-          loadDashboardData();
-        })
-        .catch(err => {
-          alert('❌ Registration Failed!');
-          subBtn.innerText = 'Register & Join Now';
-          subBtn.disabled = false;
-        });
+        checkLoginSession();
+      })
+      .catch(err => {
+        alert('❌ Error Saving Data!');
+        subBtn.innerText = 'Register & Join Now';
+        subBtn.disabled = false;
+      });
     }
 
     function logoutUser() {
       localStorage.removeItem('ps_network_user');
       alert('🔒 Logged Out!');
+      // Reset level members display
+      userData.levels.forEach(l => l.members = 0);
       checkLoginSession();
     }
 
     function loadDashboardData() {
-      fetch(scriptURL + "?action=getDashboard")
+      const savedUser = localStorage.getItem('ps_network_user');
+      if (!savedUser) return;
+      const user = JSON.parse(savedUser);
+
+      document.getElementById('loadingText').classList.remove('hidden');
+
+      fetch(scriptURL + "?action=getDashboard&mobile=" + encodeURIComponent(user.mobile))
         .then(res => res.json())
         .then(data => {
           if (data) {
-            const c100 = parseInt(data.count100 || 0);
-            const c200 = parseInt(data.count200 || 0);
-            const c500 = parseInt(data.count500 || 0);
-            const c1000 = parseInt(data.count1000 || 0);
-            const c2000 = parseInt(data.count2000 || 0);
-            const activeLvl = parseInt(data.levelActive || 100);
+            userData.activeLevel = parseInt(data.levelActive || 100);
 
-            userData.activeLevel = activeLvl;
-
-            userData.levels[0].members = c100;
-            userData.levels[1].members = c200;
-            userData.levels[2].members = c500;
-            userData.levels[3].members = c1000;
-            userData.levels[4].members = c2000;
+            userData.levels[0].members = parseInt(data.count100 || 0);
+            userData.levels[1].members = parseInt(data.count200 || 0);
+            userData.levels[2].members = parseInt(data.count500 || 0);
+            userData.levels[3].members = parseInt(data.count1000 || 0);
+            userData.levels[4].members = parseInt(data.count2000 || 0);
 
             userData.levels[0].paid = true;
-            userData.levels[1].paid = activeLvl >= 200;
-            userData.levels[2].paid = activeLvl >= 500;
-            userData.levels[3].paid = activeLvl >= 1000;
-            userData.levels[4].paid = activeLvl >= 2000;
+            userData.levels[1].paid = userData.activeLevel >= 200;
+            userData.levels[2].paid = userData.activeLevel >= 500;
+            userData.levels[3].paid = userData.activeLevel >= 1000;
+            userData.levels[4].paid = userData.activeLevel >= 2000;
           }
           renderLevelsUI();
         })
@@ -261,17 +270,14 @@
       container.innerHTML = '';
 
       userData.levels.forEach(item => {
-        // Recycle Calculation (Every 20 members = 1 Cycle Complete)
         const recycleLimit = 20;
         const totalCycles = Math.floor(item.members / recycleLimit);
         const currentCycleMembers = item.members % recycleLimit;
 
-        // Bonus Calculation: 3 members joining gives 5% bonus per member
-        const perMemberBonusRate = item.price * 0.05; // 5% of package price
+        const perMemberBonusRate = item.price * 0.05; 
         const isBonusActive = item.members >= 3;
         const totalBonusEarned = isBonusActive ? (item.members * perMemberBonusRate) : 0;
 
-        // Base Level Income
         const levelIncomeOnly = item.members * item.commRate;
         const grandTotalIncome = levelIncomeOnly + totalBonusEarned;
 
@@ -344,7 +350,6 @@
 
     window.onload = function() {
       checkLoginSession();
-      loadDashboardData();
     };
   </script>
 </body>
