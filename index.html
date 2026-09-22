@@ -32,7 +32,7 @@
       </button>
     </div>
 
-    <!-- AUTH CONTAINER (Login & Register) -->
+    <!-- AUTH CONTAINER -->
     <div id="authContainer" class="glass p-5 rounded-[1.5rem] border border-slate-700 shadow-xl space-y-4">
       
       <!-- Tab Selection -->
@@ -49,7 +49,7 @@
       <form id="loginForm" onsubmit="handleLogin(event)" class="space-y-3 text-xs">
         <div>
           <label class="block text-slate-400 mb-1">Mobile Number</label>
-          <input type="tel" id="loginMobile" required class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-white focus:outline-none focus:border-blue-500" placeholder="Enter Registered Mobile Number">
+          <input type="tel" id="loginMobile" required class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-white focus:outline-none focus:border-blue-500" placeholder="Registered Mobile Number">
         </div>
         <div>
           <label class="block text-slate-400 mb-1">Password</label>
@@ -60,11 +60,11 @@
         </button>
       </form>
 
-      <!-- 2. REGISTER FORM -->
+      <!-- 2. REGISTER FORM WITH QR CODE -->
       <form id="regForm" onsubmit="handleRegister(event)" class="space-y-2.5 text-xs hidden">
         <div>
           <label class="block text-slate-400 mb-1">Full Name</label>
-          <input type="text" id="regName" required class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-white focus:outline-none focus:border-blue-500" placeholder="Enter Name">
+          <input type="text" id="regName" required class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-white focus:outline-none focus:border-blue-500" placeholder="Enter Full Name">
         </div>
         <div>
           <label class="block text-slate-400 mb-1">Mobile Number</label>
@@ -90,9 +90,25 @@
             <input type="text" id="regRefId" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-white focus:outline-none focus:border-blue-500" placeholder="Optional">
           </div>
         </div>
+
+        <!-- PAYMENT QR CODE BLOCK -->
+        <div class="bg-slate-900/90 border border-blue-500/30 p-3 rounded-xl text-center space-y-2 my-2">
+          <p class="text-xs text-amber-400 font-semibold">💳 Scan & Pay to Register</p>
+          
+          <div class="flex justify-center my-2">
+            <img id="qrCodeImg" src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=6397969337@ptyes%26pn=P.S%20Network%26cu=INR" 
+                 alt="Payment QR Code" 
+                 class="w-36 h-36 rounded-lg border-2 border-white/20 p-1 bg-white">
+          </div>
+
+          <p class="text-[11px] text-slate-300">Name: <b class="text-blue-400">P.S Network</b></p>
+          <p class="text-[11px] text-slate-300">UPI ID: <b class="text-emerald-400 select-all">6397969337@ptyes</b></p>
+          <p class="text-[10px] text-slate-400">Payment karne ke baad UTR/Transaction ID neeche darj karein</p>
+        </div>
+
         <div>
           <label class="block text-slate-400 mb-1">Payment UTR / Ref No.</label>
-          <input type="text" id="regUtr" required class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-white focus:outline-none focus:border-blue-500" placeholder="Enter UTR Number">
+          <input type="text" id="regUtr" required class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-white focus:outline-none focus:border-blue-500" placeholder="Enter 12-digit UTR Number">
         </div>
         <button type="submit" id="subBtn" class="w-full bg-gradient-to-r from-blue-600 to-emerald-600 hover:from-blue-500 hover:to-emerald-500 font-bold py-2.5 rounded-lg text-white shadow-lg transition-all mt-1">
           Register & Join Now
@@ -109,9 +125,7 @@
         ⏳ Loading Data...
       </div>
 
-      <div id="levelsContainer" class="space-y-3 hidden">
-        <!-- Dynamic Load -->
-      </div>
+      <div id="levelsContainer" class="space-y-3 hidden"></div>
     </div>
 
   </div>
@@ -165,7 +179,6 @@
       }
     }
 
-    // REAL LOGIN FUNCTION WITH GOOGLE SHEET VERIFICATION
     function handleLogin(e) {
       e.preventDefault();
       const loginBtn = document.getElementById('loginBtn');
@@ -187,7 +200,7 @@
             alert('✅ Login Successful!');
             checkLoginSession();
           } else {
-            alert(data.message || '❌ Sahi Mobile Number ya Password daalein!');
+            alert(data.message || '❌ Galat Mobile Number ya Password!');
           }
         })
         .catch(err => {
